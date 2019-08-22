@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on RyanKing&#39;s Blog</title>
+    <link>http://ryanking8215.github.io/tags/</link>
+    <description>Recent content in Tags on RyanKing&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 17 Jan 2016 14:50:54 +0800</lastBuildDate>
+    
+	<atom:link href="http://ryanking8215.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>cross-compile</title>
+      <link>http://ryanking8215.github.io/tags/cross-compile/</link>
+      <pubDate>Sun, 17 Jan 2016 14:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/cross-compile/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>http://ryanking8215.github.io/tags/python/</link>
+      <pubDate>Sun, 17 Jan 2016 14:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>django</title>
+      <link>http://ryanking8215.github.io/tags/django/</link>
+      <pubDate>Sun, 25 Oct 2015 10:00:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/django/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ctypes</title>
+      <link>http://ryanking8215.github.io/tags/ctypes/</link>
+      <pubDate>Sun, 20 Sep 2015 14:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/ctypes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>webframework</title>
+      <link>http://ryanking8215.github.io/tags/webframework/</link>
+      <pubDate>Mon, 06 Apr 2015 16:13:40 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/webframework/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nodejs</title>
+      <link>http://ryanking8215.github.io/tags/nodejs/</link>
+      <pubDate>Mon, 10 Nov 2014 21:20:12 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/nodejs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>encrypto</title>
+      <link>http://ryanking8215.github.io/tags/encrypto/</link>
+      <pubDate>Sun, 05 Oct 2014 17:20:36 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/encrypto/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>git</title>
+      <link>http://ryanking8215.github.io/tags/git/</link>
+      <pubDate>Sun, 05 Oct 2014 17:00:20 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>javascript</title>
+      <link>http://ryanking8215.github.io/tags/javascript/</link>
+      <pubDate>Sun, 05 Oct 2014 16:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/javascript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>设计模式</title>
+      <link>http://ryanking8215.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sat, 04 Oct 2014 22:13:40 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>live555</title>
+      <link>http://ryanking8215.github.io/tags/live555/</link>
+      <pubDate>Sat, 04 Oct 2014 22:13:35 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/live555/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>golang</title>
+      <link>http://ryanking8215.github.io/tags/golang/</link>
+      <pubDate>Sat, 04 Oct 2014 22:13:33 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>xml</title>
+      <link>http://ryanking8215.github.io/tags/xml/</link>
+      <pubDate>Sat, 04 Oct 2014 22:13:33 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/xml/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>c</title>
+      <link>http://ryanking8215.github.io/tags/c/</link>
+      <pubDate>Wed, 04 Jun 2014 22:20:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/c/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>http://ryanking8215.github.io/tags/linux/</link>
+      <pubDate>Wed, 04 Jun 2014 22:20:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>debug</title>
+      <link>http://ryanking8215.github.io/tags/debug/</link>
+      <pubDate>Fri, 04 May 2012 22:20:43 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/debug/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>autofocus</title>
+      <link>http://ryanking8215.github.io/tags/autofocus/</link>
+      <pubDate>Thu, 15 Mar 2012 17:24:35 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/autofocus/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>camera</title>
+      <link>http://ryanking8215.github.io/tags/camera/</link>
+      <pubDate>Thu, 15 Mar 2012 17:24:35 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/camera/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,795 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RyanKing&#39;s Blog on RyanKing&#39;s Blog</title>
+    <link>http://ryanking8215.github.io/</link>
+    <description>Recent content in RyanKing&#39;s Blog on RyanKing&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 19 Aug 2019 18:37:51 +0800</lastBuildDate>
+    <atom:link href="/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>My First Post</title>
+      <link>http://ryanking8215.github.io/2019/my-first-post/</link>
+      <pubDate>Mon, 19 Aug 2019 18:37:51 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2019/my-first-post/</guid>
+      <description>&lt;p&gt;| kk | jj | bb |
+| &amp;ndash; | &amp;ndash; | &amp;ndash; |
+| 1  | 2  | 3 |
+| 11  | 22 | 33 |&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+    fmt.Println(&amp;quot;hello, world&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>python3.5 交叉编译</title>
+      <link>http://ryanking8215.github.io/2016/python35-cross-compile/</link>
+      <pubDate>Sun, 17 Jan 2016 14:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2016/python35-cross-compile/</guid>
+      <description>
+
+&lt;p&gt;有一个嵌入式项目，尝试将python3.5.1移植到该平台。还未确定是否用python开发, 先把
+环境整好，到时想用就能用了，也记录一下，可以用这种方法移植到其他平台。&lt;/p&gt;
+
+&lt;h1 id=&#34;问题&#34;&gt;问题&lt;/h1&gt;
+
+&lt;p&gt;Python工程本来就有&lt;code&gt;configure&lt;/code&gt;工具，理论上讲交叉编译比较简单，只要指定&lt;code&gt;--host&lt;/code&gt;为你
+的交叉编译工具链即可。其他基于&lt;code&gt;autoconf/automake&lt;/code&gt;的也是类似的。但是Python比较特殊
+的是，在交叉编译过程中，会生成&lt;code&gt;Parse/Pgen&lt;/code&gt;和&lt;code&gt;python&lt;/code&gt;应用程序，然后会运行该程序,
+那么问题来了，交叉编译出来的程序在开发机上无法执行的，它们是运行在嵌入式系统上的。&lt;/p&gt;
+
+&lt;p&gt;查看网络上的解决方法:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;为Python工程打补丁&lt;/p&gt;
+
+&lt;p&gt;打补丁的方法只支持到3.2，新版本就没有了, 大意是先是用本地的编译器编译出python和pgen，改名，然后再是用
+交叉编译工具编译，当然需要加入特殊的命令行参数来指定刚才编译出来的python和pgen。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;压根不处理&lt;/p&gt;
+
+&lt;p&gt;不处理的也有，就直接make就ok了，是python3.4+mips的环境，不明白怎么没碰到这个问题。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;看来要自己解决了。
+尝试忽略执行该程序的过程，修改&lt;code&gt;Makefile&lt;/code&gt;, 找到这部分，把它们注释掉，
+继续make，最后ok了。
+可能不是一个好方法，但是一个可行的方法。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+
+&lt;p&gt;网上找了很多资料做参考，这里记录一下。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.tuicool.com/articles/b6f6Nvf&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;交叉编译Python至嵌入式arm(支持import sqlite3,datetime等)&amp;mdash;&amp;ndash;Cross Compiling Python for Emb&amp;hellip;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.tuicool.com/articles/YRFFfa&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;交叉编译Python 3.3 压成1.5MB&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.tuicool.com/articles/qe6V3y&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;为 Kindle 交叉编译 Zsh 和 Python 3.3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Django下通过form创建model对象如何隐藏不必要的field</title>
+      <link>http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/</link>
+      <pubDate>Sun, 25 Oct 2015 10:00:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/</guid>
+      <description>
+
+&lt;h1 id=&#34;简述&#34;&gt;简述&lt;/h1&gt;
+
+&lt;p&gt;例如Model A和Model S是一对多的关系，即A是one， S是many, 使用&lt;code&gt;ForeignKey&lt;/code&gt;来定义&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class A(models.Model):
+  name = models.CharFields(max_length=64)
+
+class S(models.Model):
+  name = models.CharFields(max_length=64)
+  a = models.ForeignKey(A)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在某个页面创建S的时候，需要指定是哪个A。 如果为A和S注册了admin，那么在admin-site里创建S的时候，会看到需要选择哪个A的实例，它会把所有的A的记录都列出来&lt;/p&gt;
+
+&lt;p&gt;但这个是针对admin的，不是针对业务的，如果一个用户想为他名下的某个A资源建立一个S的资源，那么把所有A的记录都列出来是不合适的，也不安全；实际上例如&lt;code&gt;POST /A/1/S/create&lt;/code&gt;这样的url已经含了A的主键，在创建S的时候只需要为a field赋值即可，而且是自动的，不需要用户选择。&lt;/p&gt;
+
+&lt;h1 id=&#34;策略&#34;&gt;策略&lt;/h1&gt;
+
+&lt;p&gt;就是在创建S的时候，不能把a的field暴露出来，并且根据url里的A的主键，将a赋值为A.objects.get(pk=1)即可。&lt;/p&gt;
+
+&lt;h2 id=&#34;方法1&#34;&gt;方法1&lt;/h2&gt;
+
+&lt;p&gt;直接使用&lt;code&gt;CreateView&lt;/code&gt;，model为S，form暴露的fields需要包括&lt;code&gt;a&lt;/code&gt;，在获取form初始值时，将&lt;code&gt;a&lt;/code&gt;赋值。form在render的时候，需要隐藏&lt;code&gt;a field&lt;/code&gt;，需要自定义各form的field，不能使用form.as_p()等。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class SCreateView(CreateView):
+    model = S
+    fields = {&#39;name&#39;,&#39;a&#39;}
+    success_url = &#39;myurl&#39;
+    template_name = &#39;s_add.html&#39;
+
+    def get(self, request, *args, **kwargs):
+        # 这里根据url参数获取A的对象
+        self.a_object = A.objects.get(pk=kwargs[&#39;a_id&#39;])
+
+    def get_initial(self):
+        # 这里这样默认的form里a field就有值了。
+        return {&#39;a&#39;:self.a_object.pk}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;方法2&#34;&gt;方法2&lt;/h2&gt;
+
+&lt;p&gt;使用&lt;code&gt;SignalObjectMixin&lt;/code&gt;和&lt;code&gt;FormView&lt;/code&gt;的组合，&lt;code&gt;SignalObjectMixin&lt;/code&gt;是为了获取&lt;code&gt;A&lt;/code&gt;的对象，FormView用于处理form的get和post。特别是post，我们的Form不需要有&lt;code&gt;a field&lt;/code&gt;，在form_valid()里，通过&lt;code&gt;form.save(commit=False)&lt;/code&gt;来创建一个S对象，但是该对象还没有持久化，然后为该对象的&lt;code&gt;a field&lt;/code&gt;赋值为self.object.pk(通过SignalObjectMixin)即可，然后调用s.save()即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class SForm(form.ModelForm):
+    class Meta:
+        model = S
+        fields = {&#39;name&#39;}
+
+class SCreateView(SingleObjectMixin, FormView):
+    model = A
+    form_class = SForm
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super(SCreateView, self).get(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(SCreateView, self).get_context_data(**kwargs)
+        context[&#39;form&#39;] = self.form_class()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super(SCreateView, self).post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        # commit为False，创建一个未持久化对象
+        s = form.save(commit=False)
+        # 为s的隐藏field赋值
+        s.a = self.object
+        # 持久化
+        s.save()
+        # 后续处理
+        return super.form_valid(self, form)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;方法3&#34;&gt;方法3&lt;/h2&gt;
+
+&lt;p&gt;继承&lt;code&gt;CreateView&lt;/code&gt;,重写&lt;code&gt;form_valid()&lt;/code&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from django.views.generic.edit import CreateView
+from myapp.models import Author
+
+class SCreate(CreateView):
+    model = S
+    fields = [&#39;name&#39;]
+
+    def form_valid(self, form):
+        # a_object可以从其他地方获取,例如url等获取a的对象，关键是form.instance，因为这个form是ModelForm，为该instance的成员赋值，然后通过super()方法去save即可。
+        form.instance.a = self.a_object
+        return super(SCreate, self).form_valid(form)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>python ctypes</title>
+      <link>http://ryanking8215.github.io/2015/python-ctypes/</link>
+      <pubDate>Sun, 20 Sep 2015 14:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/python-ctypes/</guid>
+      <description>
+
+&lt;p&gt;项目中需要用到python来抓网络包进行分析，看了pip有现成的pcap库，但是没用过，我使用的pcap的接口很简单，所以就想自己封装一个。&lt;/p&gt;
+
+&lt;h1 id=&#34;函数接口通过指针传递数据-如何在python中hold住内存&#34;&gt;函数接口通过指针传递数据，如何在python中hold住内存&lt;/h1&gt;
+
+&lt;p&gt;有接口
+    pcap_next_ext(pcap_t *, pcap_pkthdr *, u_char **)&lt;/p&gt;
+
+&lt;p&gt;最后的参数即返回函数内部的内存指针，即该指针指向内部内存，该部分数据即收到的包，在处理协议时，需要对该数据包进行分析:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;    u_char * data;
+    pcap_next_ext(pcap,&amp;amp;head,&amp;amp;data);
+    eth_frame_t *eth = (eth_frame_t *)data;
+    rest_data_t * mine = (rest_data_t *)(data+sizeof(*eth))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上是c的调用实例，现在要用python来实现。&lt;/p&gt;
+
+&lt;p&gt;函数声明:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;    api.pcap_next_ext.argtypes = (ctypes.c_void_p,pcap_pkther_p, POINTER(POINTER(c_ubyte)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里用POINTER(POINTER(c_ubyte))来表示u_char **的类型，为什么不用
+&lt;code&gt;POINTER(c_char_p)&lt;/code&gt;呢，因为&lt;code&gt;c_char_p&lt;/code&gt;是以NULL为结束的，所以分析二进制数据的时候，这个是不合适的，因为数据有可能为0,即’\0’,会被截断的。
+调用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;    data = POINTER(c_ubyte)() # u_char *data;
+    api.pcap_next_ext(pcap,ctypes.byref(head),ctypes.byref(data))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样，data就能hold住c function通过指针返回的数据了。
+ctypes.byref(data)即 &amp;amp;data.&lt;/p&gt;
+
+&lt;p&gt;那如何使用data所指向的数据呢?
+在python层，它认为是一个pointer, data有contents属性，值是第1个数据，即data[0],当然，我们可以通过data[i]访问索引为i的字节，和c指针一样，但如何强制转换呢？
+eth_frame = ctypes.cast(data,eth_frame_p)
+那之后的mine指针怎么赋值呢？&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;    mine = ctypes.cast(data+eth_frame.size(),rest_data_p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样是不行的，我们需要得到data的地址，通过ctypes.addressof(data.contents)
+这才是data指针的基地址，我们可以通过它来访问后续的内存&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;mine = ctypes.cast(ctypes.addressof(data.contents)+eth_frame.size(),rest_data_p)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>资源，认证，鉴权和python的装饰器</title>
+      <link>http://ryanking8215.github.io/2015/py-decorate/</link>
+      <pubDate>Sun, 12 Apr 2015 16:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/py-decorate/</guid>
+      <description>
+
+&lt;h1 id=&#34;简述&#34;&gt;简述&lt;/h1&gt;
+
+&lt;p&gt;这是一个目前在做的flask web项目的一点记录，基本思路是以python的装饰器为request handler加入资源描述，用户认证和鉴权的功能，这样，不用在每个request handler里都把这些代码调用一遍，以装饰器的模式，更加简便和美观，便于调试&lt;/p&gt;
+
+&lt;p&gt;下面描述几个概念&lt;/p&gt;
+
+&lt;h2 id=&#34;资源&#34;&gt;资源&lt;/h2&gt;
+
+&lt;p&gt;这里的资源即人为设定的数据结构，用来描述该request handler会对系统的哪个资源进行什么样的操作。以restful api为例，你需要定义系统中有哪些
+资源，该handler是做什么操作(CRUD)。以博客为例：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Resource(enum.IntEnum):
+    BLOG = 1
+    COMMENT = 2
+
+class Operation(enum.IntEnum):
+    C = 1&amp;lt;&amp;lt;0
+    R = 1&amp;lt;&amp;lt;1
+    U = 1&amp;lt;&amp;lt;2
+    D = 1&amp;lt;&amp;lt;3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;用户登录之后，得到资源数据，即BLOG资源可以有哪些操作，COMMENT资源有哪些操作，然后和handler的资源描述一比较，就能得到权限结果。&lt;/p&gt;
+
+&lt;h2 id=&#34;认证和鉴权&#34;&gt;认证和鉴权&lt;/h2&gt;
+
+&lt;p&gt;好多人认为这是一个东西，有些web框架也会认为是一个，但是依本人愚见不是，认证是用户以用户凭证是否能登录进你的系统，而鉴权是用户认证完后得到的权限能做什么操作。
+2者有先后的逻辑关系。认证的方法有好多种，目前的系统是通过Digest来认证，简单方便。&lt;/p&gt;
+
+&lt;p&gt;详细说说鉴权，用户登录完后，从系统中取出该用户的权限操作，我这里以dict[Resource] = operation_mask来保存，即权限是一个dict，记录每个资源的操作值。当访问restful api时，
+和handler的资源描述比对，其实就是检查dict内是否有对应的资源，通过位操作判断是否有对应的操作权限。简单方便。&lt;/p&gt;
+
+&lt;h2 id=&#34;装饰器&#34;&gt;装饰器&lt;/h2&gt;
+
+&lt;p&gt;有追求的python码农都会考虑通过装饰器来简化函数调用。如果不使用装饰器，代码应该是这样的：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def get_blog():
+   set_resource(BLOG,R)
+   if not digest_authentication():
+       abort(401)
+   if not authorization():
+       abort(403)
+   # 继续处理
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果用装饰器，那么应该是这样的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;@set_resource(BLOG,R)
+@digest_authentication
+@authorization
+def get_blog():
+   # 继续处理
+   pass
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;有追求的python码农不会满足于此，每个函数上有3个@,其实本人的项目都是json输出，最后还有@jsonify的装饰器，总共有4个，太多太杂，而且有先后顺序，容易错。
+整成一个多好？&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;@access_config((BLOG,R),is_authentication=True,is_authorization=True)
+def get_blog():
+    # 继续处理
+    pass
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;有没有点&lt;code&gt;pyramid&lt;/code&gt;的感觉？我们来定义一下access_config这个装饰器:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def access_config(resource_authority, is_authentication=True, is_authorization=True):
+
+    &#39;&#39;&#39; 访问设置, 用于简化处理函数的装饰器安装, 装饰器模式
+        :param authority: 访问所需的权限值
+        :param is_authentication: 是否认证
+        :param is_authorization: 是否鉴权,如果is_authentication=False,则该值也无意义
+    &#39;&#39;&#39;
+
+    def _deco(func):
+        @wraps(func)
+        def _deco2(*args,**kwargs):
+            f = func
+            f = jsonify(f)
+            if is_authorization:
+                f = authorize(f)
+            if is_authentication:
+                f = authenticate(f)
+            f = access_authority(resource_authority)(f)
+            return f(*args,**kwargs)
+        return _deco2
+    return _deco
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一个是要注意调用装饰器的顺序，另外，在&lt;code&gt;access_config&lt;/code&gt;里设置参数，可以为每个handler单独设置是否需要认证和鉴权，便于调试，当然，默认值都是True，调用层参数更少。
+大概就是这么个思路，记录一下，希望有帮助。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>pyramid and flask</title>
+      <link>http://ryanking8215.github.io/2015/pyramid-and-flask/</link>
+      <pubDate>Mon, 06 Apr 2015 16:13:40 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/pyramid-and-flask/</guid>
+      <description>
+
+&lt;p&gt;有个企业内部项目，restful api，mysql, digest authentication.
+python很早就用了，写一些维护的脚本和验证一些算法，简单明了，不用考虑c/c++的内存管理。
+但是web开发还是第一次，事先了解了一些python下的web framework&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;web.py&lt;/li&gt;
+&lt;li&gt;bottle&lt;/li&gt;
+&lt;li&gt;flask&lt;/li&gt;
+&lt;li&gt;pyramid&lt;/li&gt;
+&lt;li&gt;django&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;因为ORM使用sqlalchemy，所以先踢掉了django；web.py因为python3和创始人的原因，不再考虑；bottle太过简单，学习可以，用在工程上可能欠妥，也排除；留下了flask和pyramid，flask名气更响，资源更多，但是在简单了解了pyramid后，使用pyramid来开展项目，当然之后由于某些原因又换到了flask，所以把这2个框架的使用和区别做一些记录，以供参考，当然，由于初次接触web框架，难免会有疏漏和错误，望海涵。&lt;/p&gt;
+
+&lt;h2 id=&#34;路由&#34;&gt;路由&lt;/h2&gt;
+
+&lt;p&gt;pyramid把url设置为一个唯一string,然后将hanlder绑定在该string上。几乎所有的配置均可通过装饰器解决，除了url本身，你可以指定method,query strings来绑定具体的handler，不用进一个进口，然后根据query stirng或者method来区分。&lt;/p&gt;
+
+&lt;p&gt;flask使用装饰器直接将url绑定在handler上，无论是使用app还是blueprint。支持继承view的方式来设定handler，我用的最多的就是MethodView。&lt;/p&gt;
+
+&lt;h2 id=&#34;模板&#34;&gt;模板&lt;/h2&gt;
+
+&lt;p&gt;pyramid默认模板是mako；flask默认模板是jinjia2。按照jinjia2的说法，两者性能差不多，好像周遭用jinjia2的更多一点。两者均支持更换第三方模板。&lt;/p&gt;
+
+&lt;p&gt;pyramid支持将模板render功能写在装饰器里，而flask需要显式调用&lt;code&gt;render_template()&lt;/code&gt;,我的项目返回json数据，pyramid支持内置的&lt;code&gt;render=&#39;json&#39;&lt;/code&gt;,而flask需要显式调用&lt;code&gt;jsonify&lt;/code&gt;,后来项目换成flask的时候，也如法炮制，将render做成了装饰器。&lt;/p&gt;
+
+&lt;h2 id=&#34;测试&#34;&gt;测试&lt;/h2&gt;
+
+&lt;p&gt;两者的测试哲学不同。&lt;/p&gt;
+
+&lt;p&gt;pyramid因为处理函数返回的数据是dict，所以，它的测试是直接对处理函数测试，将req填好数据，然后直接调用处理函数，得到dict，再验证dict正确性。&lt;/p&gt;
+
+&lt;p&gt;flask需要一个请求上下文来测试，也可以说是模拟一个请求客户端，填入真正的url和数据，返回的也是真的数据，而不是中间数据。&lt;/p&gt;
+
+&lt;p&gt;各有利弊，pyramid的这种方式测不到路由是否正确，flask如果用模板render,得到html，验证数据比较麻烦。&lt;/p&gt;
+
+&lt;h2 id=&#34;python3支持&#34;&gt;python3支持&lt;/h2&gt;
+
+&lt;p&gt;按照各自官网的说法，pyramid对python3完全支持。&lt;/p&gt;
+
+&lt;p&gt;flask本身支持，但是它认为好多add-on仍旧是python2,所以还是推荐python2.&lt;/p&gt;
+
+&lt;h2 id=&#34;更多&#34;&gt;更多&lt;/h2&gt;
+
+&lt;p&gt;pyramid对web还有更多的框架定义，例如&lt;code&gt;security&lt;/code&gt;,支持认证和权限等等。&lt;/p&gt;
+
+&lt;p&gt;flask更内聚一点，额外功能用addon实现。&lt;/p&gt;
+
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;两者都是优秀的框架，项目换成flask不是因为flask比pyramid好，只是flask中文资源更多一点，因为初入web,找help更简单一点。
+其实，pyramid的config装饰器功能强大，几乎配置均可以写在装饰器里，包括method，query string，render资源，不仅仅是url本身，我喜欢这种方式，似乎其他的web框架都没有这么强大的配置装饰器。
+作为初入者，我不太明白为什么flask比pyramid更流行，从最后展现的框架上看，我认为pyramid更好，更符合工程需求，更完善。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>使用n管理nodejs的版本</title>
+      <link>http://ryanking8215.github.io/2014/n-nodejs-version/</link>
+      <pubDate>Mon, 10 Nov 2014 21:20:12 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/n-nodejs-version/</guid>
+      <description>&lt;p&gt;想尝试一下ec6的generator和co,为了不影响原有的开发环境
+使用n来管理nodejs的版本。&lt;/p&gt;
+
+&lt;p&gt;n的使用还是很简单的：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;n latest
+n stable
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;分别安装最新发布版本和稳定版本，前者带有ec6支持，后者用于开发环境。
+这2个都是安装的二进制版本，不需要编译。&lt;/p&gt;
+
+&lt;p&gt;单独使用&lt;code&gt;n&lt;/code&gt;可以切换版本号，但我的目的是二者共存，&lt;code&gt;n&lt;/code&gt;还有个命令：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;n use &amp;lt;version&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;只要把这个写个alias到shell里，就能共存啦：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;alias nn=&amp;quot;n use 0.11.14 --harmony&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;想尝试generator的，只要&lt;code&gt;nn xxx.js&lt;/code&gt;就好啦！很方便。&lt;/p&gt;
+
+&lt;p&gt;p.s. 之前还用了一小会nvm，是从源码编译node的，在Linux上切换发生了点问题，具体
+原因也不查了，it makes no sense. 感觉没&lt;code&gt;n&lt;/code&gt;好用。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>nodejs的buffer和c string</title>
+      <link>http://ryanking8215.github.io/2014/nodejs-buffer-c-string/</link>
+      <pubDate>Fri, 31 Oct 2014 19:13:42 +0000</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/nodejs-buffer-c-string/</guid>
+      <description>
+
+&lt;p&gt;设备上有现成的二进制通信协议，nodejs作为客户端连接上去发送请求得到响应。
+其中有协议是传送字符串，用&lt;code&gt;c struct&lt;/code&gt;表示就是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;struct Response {
+    uint32_t value;
+    char name[64];
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因为c string以&amp;rsquo;\0&amp;rsquo;为结束，为了协议到c的对端能开箱即用，name最多存63个字节。&lt;/p&gt;
+
+&lt;p&gt;node客户端收到数据后，用buffer来处理，转换成response对象&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;{
+    value: {number}
+    name: {string}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;buf转string的函数是 &lt;code&gt;buf.toString()&lt;/code&gt;，但是得到的数据类似于&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;&#39;h&#39;,&#39;e&#39;,&#39;l&#39;,&#39;l&#39;,&#39;o&#39;,&#39;\u0000&#39;,&#39;\u0000&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因为js的string不是以&amp;rsquo;\0&amp;rsquo;结束，它把后面的都处理为字符串的一部分，所以我们要处理一下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;name = name.substring(0,name.indexOf(&#39;\u0000&#39;))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样就ok了&lt;/p&gt;
+
+&lt;h3 id=&#34;编码问题&#34;&gt;编码问题&lt;/h3&gt;
+
+&lt;p&gt;默认的hex和utf8,nodejs的buffer api都能处理，但是如果是其他编码呢？比如由于历史原因，设备上
+传输的中文编码是gb2312。
+很幸运的是，npm里有iconv-lite的package，它能将不同的编码从string-&amp;gt;buffer, buffer-&amp;gt;string的转换。
+用它就能开心的撸了！&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何使用nodejs撸一个tcp client</title>
+      <link>http://ryanking8215.github.io/2014/nodejs-tcp-client/</link>
+      <pubDate>Tue, 28 Oct 2014 22:20:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/nodejs-tcp-client/</guid>
+      <description>&lt;p&gt;单看话题有点low,用nodejs撸一个tcp client不是秒秒钟的事情
+封装一个client，sock收到data后解析出msg，通过event通知调用端msg来了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var sock = net.createConnection(...);
+sock.on(&#39;error&#39;,function(){
+	
+})
+sock.on(&#39;data&#39;,function(buf){
+	var msg = parse_data(buf)
+	self.emit(&#39;msg&#39;,msg)
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大意如此，不要在意细节。如果真是这样的话，那就没有必要撸这个博文了。&lt;/p&gt;
+
+&lt;p&gt;首先要看封装的api到什么程度，client.sendRequest()之后如果什么都不干，光等msg过来，对于
+调用你client库的主来说真的是苦主了，一般client都有业务逻辑在，例如先connect(),再login(),
+然后再干嘛干嘛；也需要判断response，你都放在&lt;code&gt;client.on(&#39;msg&#39;,function(){...})&lt;/code&gt;里，让别人情何以堪。&lt;/p&gt;
+
+&lt;p&gt;那应该怎么做呢？&lt;/p&gt;
+
+&lt;h3 id=&#34;api设计&#34;&gt;API设计&lt;/h3&gt;
+
+&lt;p&gt;我们让client api好用一点，一般是这样子的：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;client.sendRequest(msg,function(err,result){})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者这样子的:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;client.sendRequest(msg) -&amp;gt; Promise(result)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;前者通过回调函数返回错误或结果，后者通过Promise返回，本质是一样的。
+因为server消息需要异步处理，所以我们需要callback或者promise来返回结果。&lt;/p&gt;
+
+&lt;h3 id=&#34;实现&#34;&gt;实现&lt;/h3&gt;
+
+&lt;p&gt;api的方式确定下来了，那么要研究如何实现了，假设用callback方式吧，这也是目前nodejs的api的标准格式。
+server的数据是通过socket的&lt;code&gt;data&lt;/code&gt;事件来的，client.sendRequest(msg,cb)函数里，会有cb这个参数，如何把它们联系起来呢？
+只要收到消息之后执行cb()，就可以通知调用端了。回复消息的处理在另一个函数上下文里，如果能把cb搬过去，在那个函数上下文执行就好了。
+可以利用队列，当sendRequest()时，构建一个内部使用的request对象，将cb和请求参数塞入队列，
+在&lt;code&gt;data&lt;/code&gt;的事件处理中，从队列依次取出request对象，比对请求参数和回复消息，然后可以执行cb()函数了，这样调用端就会得到结果了。&lt;/p&gt;
+
+&lt;p&gt;用promise也是一样的，用defer代替cb，ok的就defer.resolve(result); 出现错误了就defer.reject(err)。
+了解promise的都知道我在说什么，^_^&lt;/p&gt;
+
+&lt;h3 id=&#34;buffer处理&#34;&gt;buffer处理&lt;/h3&gt;
+
+&lt;p&gt;tcp是流式的，没有消息边界，换言之，&lt;code&gt;data&lt;/code&gt;事件回调里的buffer，不一定含有一条或者多条完整的协议消息，有可能是不完整的，有可能是多条完整加一点不完整的，
+总之不能做假设任何，这是tcp的粘包问题，这也是为什么tcp协议都会设定同步头，数据长度或者数据分隔符的原因。
+在收到data之后，需要和client的缓存拼接起来，看是否能parse出消息，如果能的，则需要把处理过的buffer都去除，
+未处理的buffer留下来的，以待后用。
+那如何维护这个缓存呢？看一下的demo&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;
+Session.prototype.append = function(buf) {
+    if (!buf)
+        return
+
+    if (!this._buf) {
+        this._buf = buf
+        this._buf_len = buf.length
+        return
+    }
+
+    var left = this._buf.length - this._buf_len
+    if (left&amp;gt;=buf.length) {
+        buf.copy(this._buf,this._buf_len)
+        this._buf_len+=buf.length
+        return
+    }
+    this._buf = Buffer.concat([this._buf.slice(0,this._buf_len),buf])
+    this._buf_len+=buf.length
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;就是维护一个_buf和_buf_len，前者表示缓存，后者表示数据大小，不是缓存容量大小。遵循以下规则:
+- 如果没有，则新建。
+- 如果buffer剩余空间比当前buffer大，则把当前buffer的数据copy进缓存
+- 如果buffer剩余空间比当前buffer小，则将来缓存数据和buffer数据合并，作为新的缓存。&lt;/p&gt;
+
+&lt;p&gt;消息处理只要用到内部缓存就可以了。
+这样在一定程度上避免了频繁申请内存。
+但是频繁申请内存还是逃避不了，因为libuv在底层会一直接受数据，否则你以为回调函数里的buffer是哪里来的
+这个和reactor模式不同，nodejs可以通过sock.pause(),sock.resume()控制接收速度，让内存不要增加太快。&lt;/p&gt;
+
+&lt;p&gt;另外由于v8对gc不那么积极，而且buffer的内存在v8的heap外，这样buffer会释放的更慢。
+开源项目&lt;a href=&#34;https://github.com/clowwindy/shadowsocks-nodejs&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;shadowsock-nodejs&lt;/a&gt;，作者之前因为内存暴涨问题，放弃了该版本。
+不清楚nodejs对内存暴涨如何解决。本来nodejs最擅长的就是干这个事情，结果因为这个原因，反而不合适，是比较遗憾的。&lt;/p&gt;
+
+&lt;p&gt;欢迎大家探讨！&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>用户认证加密方法</title>
+      <link>http://ryanking8215.github.io/2014/user-encrpto/</link>
+      <pubDate>Sun, 05 Oct 2014 17:20:36 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/user-encrpto/</guid>
+      <description>
+
+&lt;h2 id=&#34;简单方法&#34;&gt;简单方法&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;    sha256(sha256(passwd) + passwd_salt)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;passwd_salt 是一个随机生成的 sha256 值。
+salt和key都要存储&lt;/p&gt;
+
+&lt;h2 id=&#34;标准方法&#34;&gt;标准方法&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/PBKDF2&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;PBKDF2&lt;/a&gt;
+&lt;a href=&#34;https://en.wikipedia.org/wiki/Bcrypt&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;BCRYPT&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git远程的仓库和分支操作</title>
+      <link>http://ryanking8215.github.io/2014/git-remote/</link>
+      <pubDate>Sun, 05 Oct 2014 17:00:20 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/git-remote/</guid>
+      <description>&lt;p&gt;看了git的手册，关于remote的操作。稍微精简了一下，以供记录和记忆。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;查看远程仓库
+    git remote [-v]&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;添加远程仓库
+    git remote add [remote-name] [url]&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;改名远程仓库
+    git remote rename [old-name] [new-name]&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;删除远程仓库
+    git remote rm [remote-name]&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;抓取远程仓库的数据
+    git fetch [remote-name]&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;推送数据到远程分支
+    git push [remote-name] [branch-name]
+    git push [remote-name] [local-branch-name]:[remote-branch-name]&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;删除远程仓库分支
+    git push [remote-name] :[remote-branch-name]&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;使用本地分支跟踪远程分支
+    git checkout &amp;ndash;track [remote-name]/[remote-branch-name]
+    git checout -b [local-branch-name] [remote-name]/[remote-branch-name]&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;如果本地分支为跟踪分支：
+在此分支下 git pull（fetch and merge）, git push可以自动识别远程信息，不需要填写remote-name/branch-name了。包括git clone来分支的。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;合并本地分支和远程分支
+    git merge [remote-name]/[remote-branch-name]&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>promise要注意的地方</title>
+      <link>http://ryanking8215.github.io/2014/promise-careful/</link>
+      <pubDate>Sun, 05 Oct 2014 16:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/promise-careful/</guid>
+      <description>&lt;p&gt;promise可以级联，但是不要忘记在then()中return一个Promise,否则将会并发执行。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;do_a()
+.then(function(){
+      do_b()
+})
+.then(function(){
+     do_c()
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;VS.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;do_a()
+.then(function(){
+      return do_b()
+})
+.then(function(){
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;切记！&lt;/strong&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>promise处理数组</title>
+      <link>http://ryanking8215.github.io/2014/promise-array/</link>
+      <pubDate>Sun, 05 Oct 2014 16:47:03 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/promise-array/</guid>
+      <description>
+
+&lt;p&gt;promise 使用bluebird，现在要求按照数组顺序启动异步任务，也即等待一个promise被settled后再执行下一个。
+有什么方法吗？难道按照数组写死一个个的then吗？
+&lt;!-- more --&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;promise-map&#34;&gt;Promise.map()&lt;/h3&gt;
+
+&lt;p&gt;Promise.map() 是按顺序迭代数组，但是异步任务仍旧是并发执行的。不符合条件。&lt;/p&gt;
+
+&lt;h3 id=&#34;递归&#34;&gt;递归&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var array = [&#39;a1&#39;,&#39;a2&#39;,&#39;a3&#39;,&#39;a4&#39;]
+
+return (function handle_array(idx){
+    idx = idx || 0
+    if (idx&amp;gt;=array.length) {
+        return
+    }
+    return async_task(id,array[idx])
+    .then(function(result){
+        idx++;
+        return handle_array(idx);
+    })
+})()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;利用promise对象迭代&#34;&gt;利用promise对象迭代&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var promise = Promise.resolve()
+array.forEach(function(v){
+    console.log(v)
+    promise = promise.then(function(){
+        return async_task(v)
+    })
+    .then(function(v){
+        console.log(v)
+    })
+})
+promise.then(function(){
+    console.log(&#39;done&#39;)
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可能还有其他方法。
+个人感觉递归更自然一点。
+第二种方法要记住promise可以先返回，但是按照顺序被resolved后再执行下一个的。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>抽象工厂模式</title>
+      <link>http://ryanking8215.github.io/2014/abstract-factory/</link>
+      <pubDate>Sat, 04 Oct 2014 22:13:40 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/abstract-factory/</guid>
+      <description>&lt;p&gt;简单描述之:&lt;/p&gt;
+
+&lt;p&gt;一个系统里有n个组件组成，为支持m种系统的实现，即多种n个组件实现，
+需要用到抽象工厂方法.&lt;/p&gt;
+
+&lt;p&gt;抽象方法里有n个组件的工厂方法，
+有m种具体工厂类实现抽象工厂，创建各自对应的n种组件，
+当然组件本身通过接口或抽象类描述，达到系统最大灵活性&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Live555源码分析</title>
+      <link>http://ryanking8215.github.io/2014/live555-analyze/</link>
+      <pubDate>Sat, 04 Oct 2014 22:13:35 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/live555-analyze/</guid>
+      <description>
+
+&lt;h2 id=&#34;source&#34;&gt;Source&lt;/h2&gt;
+
+&lt;p&gt;Live555下FramedSource是继承于MediaSource的类，表示&lt;strong&gt;提供帧数据源&lt;/strong&gt;,
+主要用“模板模式&amp;rdquo;实现了getNextFrame()接口，其中doGetNextFrame()需要子类去实现。&lt;/p&gt;
+
+&lt;h2 id=&#34;source级联&#34;&gt;Source级联&lt;/h2&gt;
+
+&lt;p&gt;大部分的Source类都继承自FramedFilter类而不是FramedSource，
+FramedFilter本身是一个FramedSource类，而且可以有一个FramedSource类对象作为input，
+这样FramedFilter就可以级联起来，对用户使用来说，
+live555不主动定义现有的FramedSource，因为每个用户的数据来源广泛，
+用户只要实现了自己的FrameSouce类，然后就可以使用现有的FramedFilter类做处理。&lt;/p&gt;
+
+&lt;p&gt;例如，我只要实现自己的FrameSource类，或从网络自有协议获取数据，
+或从设备直接编码得到数据，
+然后通过live555的现有H264VideoStreamFramer-&amp;gt;H264FUAxxx-&amp;gt;H264RTPSink,这样利用live555，实现h264的rtp封装。&lt;/p&gt;
+
+&lt;h2 id=&#34;补充&#34;&gt;补充&lt;/h2&gt;
+
+&lt;p&gt;如果直接从RTP流获取数据作为Source,live555有现成的RtpSource和N种媒体类型对应的RtpSource子类。&lt;/p&gt;
+
+&lt;p&gt;如果从设备直接编码数据，可以继承DeviceSource类，这是live555预先定义好的抽象类.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

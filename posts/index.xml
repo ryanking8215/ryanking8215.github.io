@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on RyanKing&#39;s Blog</title>
+    <link>http://ryanking8215.github.io/posts/</link>
+    <description>Recent content in Posts on RyanKing&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 19 Aug 2019 18:37:51 +0800</lastBuildDate>
+    
+	<atom:link href="http://ryanking8215.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>My First Post</title>
+      <link>http://ryanking8215.github.io/2019/my-first-post/</link>
+      <pubDate>Mon, 19 Aug 2019 18:37:51 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2019/my-first-post/</guid>
+      <description>| kk | jj | bb | | &amp;ndash; | &amp;ndash; | &amp;ndash; | | 1 | 2 | 3 | | 11 | 22 | 33 |
+package main import &amp;quot;fmt&amp;quot; func main() { fmt.Println(&amp;quot;hello, world&amp;quot;) }  </description>
+    </item>
+    
+    <item>
+      <title>python3.5 交叉编译</title>
+      <link>http://ryanking8215.github.io/2016/python35-cross-compile/</link>
+      <pubDate>Sun, 17 Jan 2016 14:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2016/python35-cross-compile/</guid>
+      <description>交叉编译python3.5.1, 用于嵌入式系统。</description>
+    </item>
+    
+    <item>
+      <title>Django下通过form创建model对象如何隐藏不必要的field</title>
+      <link>http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/</link>
+      <pubDate>Sun, 25 Oct 2015 10:00:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/</guid>
+      <description>由一个一对多关系由form创建model对象想到的。 提供了2种方法。</description>
+    </item>
+    
+    <item>
+      <title>python ctypes</title>
+      <link>http://ryanking8215.github.io/2015/python-ctypes/</link>
+      <pubDate>Sun, 20 Sep 2015 14:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/python-ctypes/</guid>
+      <description>使用ctypes封装libpcap时的一些心得</description>
+    </item>
+    
+    <item>
+      <title>资源，认证，鉴权和python的装饰器</title>
+      <link>http://ryanking8215.github.io/2015/py-decorate/</link>
+      <pubDate>Sun, 12 Apr 2015 16:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/py-decorate/</guid>
+      <description>在一个web项目中使用python装饰器的经验</description>
+    </item>
+    
+    <item>
+      <title>pyramid and flask</title>
+      <link>http://ryanking8215.github.io/2015/pyramid-and-flask/</link>
+      <pubDate>Mon, 06 Apr 2015 16:13:40 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/pyramid-and-flask/</guid>
+      <description>还没到&amp;rdquo;vs.&amp;ldquo;的境界，只好用&amp;rdquo;and&amp;rdquo;了, -)</description>
+    </item>
+    
+    <item>
+      <title>使用n管理nodejs的版本</title>
+      <link>http://ryanking8215.github.io/2014/n-nodejs-version/</link>
+      <pubDate>Mon, 10 Nov 2014 21:20:12 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/n-nodejs-version/</guid>
+      <description>nodejs多版本共存</description>
+    </item>
+    
+    <item>
+      <title>nodejs的buffer和c string</title>
+      <link>http://ryanking8215.github.io/2014/nodejs-buffer-c-string/</link>
+      <pubDate>Fri, 31 Oct 2014 19:13:42 +0000</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/nodejs-buffer-c-string/</guid>
+      <description>nodejs的buffer和c string如何转换,二进制协议用得到</description>
+    </item>
+    
+    <item>
+      <title>如何使用nodejs撸一个tcp client</title>
+      <link>http://ryanking8215.github.io/2014/nodejs-tcp-client/</link>
+      <pubDate>Tue, 28 Oct 2014 22:20:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/nodejs-tcp-client/</guid>
+      <description>&lt;p&gt;单看话题有点low,用nodejs撸一个tcp client不是秒秒钟的事情
+封装一个client，sock收到data后解析出msg，通过event通知调用端msg来了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var sock = net.createConnection(...);
+sock.on(&#39;error&#39;,function(){
+	
+})
+sock.on(&#39;data&#39;,function(buf){
+	var msg = parse_data(buf)
+	self.emit(&#39;msg&#39;,msg)
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大意如此，不要在意细节。如果真是这样的话，那就没有必要撸这个博文了。&lt;/p&gt;
+
+&lt;p&gt;首先要看封装的api到什么程度，client.sendRequest()之后如果什么都不干，光等msg过来，对于
+调用你client库的主来说真的是苦主了，一般client都有业务逻辑在，例如先connect(),再login(),
+然后再干嘛干嘛；也需要判断response，你都放在&lt;code&gt;client.on(&#39;msg&#39;,function(){...})&lt;/code&gt;里，让别人情何以堪。&lt;/p&gt;
+
+&lt;p&gt;那应该怎么做呢？&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>用户认证加密方法</title>
+      <link>http://ryanking8215.github.io/2014/user-encrpto/</link>
+      <pubDate>Sun, 05 Oct 2014 17:20:36 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/user-encrpto/</guid>
+      <description>简单方法  sha256(sha256(passwd) + passwd_salt)  passwd_salt 是一个随机生成的 sha256 值。 salt和key都要存储
+标准方法 PBKDF2 BCRYPT</description>
+    </item>
+    
+    <item>
+      <title>git远程的仓库和分支操作</title>
+      <link>http://ryanking8215.github.io/2014/git-remote/</link>
+      <pubDate>Sun, 05 Oct 2014 17:00:20 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/git-remote/</guid>
+      <description>简单操作，简单记录</description>
+    </item>
+    
+    <item>
+      <title>promise要注意的地方</title>
+      <link>http://ryanking8215.github.io/2014/promise-careful/</link>
+      <pubDate>Sun, 05 Oct 2014 16:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/promise-careful/</guid>
+      <description>使用promise是一些注意的问题，不定时更新&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>promise处理数组</title>
+      <link>http://ryanking8215.github.io/2014/promise-array/</link>
+      <pubDate>Sun, 05 Oct 2014 16:47:03 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/promise-array/</guid>
+      <description>使用promise处理数组的方法和要注意的问题</description>
+    </item>
+    
+    <item>
+      <title>抽象工厂模式</title>
+      <link>http://ryanking8215.github.io/2014/abstract-factory/</link>
+      <pubDate>Sat, 04 Oct 2014 22:13:40 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/abstract-factory/</guid>
+      <description>简单描述之:
+一个系统里有n个组件组成，为支持m种系统的实现，即多种n个组件实现， 需要用到抽象工厂方法.
+抽象方法里有n个组件的工厂方法， 有m种具体工厂类实现抽象工厂，创建各自对应的n种组件， 当然组件本身通过接口或抽象类描述，达到系统最大灵活性</description>
+    </item>
+    
+    <item>
+      <title>Live555源码分析</title>
+      <link>http://ryanking8215.github.io/2014/live555-analyze/</link>
+      <pubDate>Sat, 04 Oct 2014 22:13:35 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/live555-analyze/</guid>
+      <description>不定时更新&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>golang and xml</title>
+      <link>http://ryanking8215.github.io/2014/go-xml/</link>
+      <pubDate>Sat, 04 Oct 2014 22:13:33 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/go-xml/</guid>
+      <description>&lt;p&gt;golang使用encoding/xml的&lt;strong&gt;Marshal&lt;/strong&gt;和&lt;strong&gt;Unmarshal&lt;/strong&gt;来处理xml。这个很简单，而且官网上都有例子。
+官网上的例子都是解析某个文件，文件的内容都是确定的；或者通过某个确定的struct来生成xml，struct的定义也是确定的。&lt;/p&gt;
+
+&lt;p&gt;但是在处理网络协议的时候，协议是变化的，例如协议有协议头，有msg_type表示是request还是response,每个request和response
+根据不同的command，带有不同的content：比如command=&amp;ldquo;do_a&amp;rdquo;或&amp;rdquo;do_b&amp;rdquo;,带的content不一样，就算一样的command，request的content和
+response的content也不一样，那收到协议以后如何解析呢？连内容都确定不了，没有办法定义一个确定的struct去Unmarshal&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>不要strip ko文件</title>
+      <link>http://ryanking8215.github.io/2014/dont-strip-ko/</link>
+      <pubDate>Wed, 04 Jun 2014 22:20:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/dont-strip-ko/</guid>
+      <description>闹乌龙啦&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>pjsip的一些问题</title>
+      <link>http://ryanking8215.github.io/2013/pjsip/</link>
+      <pubDate>Wed, 05 Jun 2013 17:20:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2013/pjsip/</guid>
+      <description>pjsip使用过程中总结的问题，不定时更新&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>使用backtrace跟踪栈信息</title>
+      <link>http://ryanking8215.github.io/2012/backtrace/</link>
+      <pubDate>Fri, 04 May 2012 22:20:43 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2012/backtrace/</guid>
+      <description>一种在嵌入式上可行的调试方法，截获SIGSEGV信号，并作backtrace()处理，把 调用栈信息打印出来。
+#include &amp;lt;signal.h&amp;gt; #include &amp;lt;execinfo.h&amp;gt; int main(void) { signal(SIGSEGV,DebugBacktrace); } static void DebugBacktrace(int signal) { #define SIZE 100 void *array[SIZE]; int size,i; char **strings; char buf[50]; fprintf(stderr,&amp;quot;\nSegmentation fault \n&amp;quot;); size = backtrace(array,SIZE); fprintf(stderr,&amp;quot;Backtrace (%d deep):\n&amp;quot;,size); strings = backtrace_symbols(array,size); for(i = 0;i&amp;lt;size;i++) { fprintf(stderr,&amp;quot;%d: %s \n&amp;quot;,i,strings[i]); } free(strings); exit(-1); return ; } #=&amp;gt; 会将调用栈根据需要显示出来  比起core来，不需要占用很大的空间，但是貌似只能回溯调用栈，无法回溯当时的内存。</description>
+    </item>
+    
+    <item>
+      <title>自动聚焦算法实现</title>
+      <link>http://ryanking8215.github.io/2012/auto-focus/</link>
+      <pubDate>Thu, 15 Mar 2012 17:24:35 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2012/auto-focus/</guid>
+      <description>若干年前做的自动聚焦算法，现在的产品一直在使用, 效果还行，后来其他项目的原因，也没有再改进过，但 个人觉得有改进的空间，这里依靠之前的笔记，做一个记录。
+图像清晰度评估 聚焦即把镜头焦距聚到正确的距离上，使图像的画面清晰不虚。所以算法需要知道图像清晰度的估算值， 根据这个值，通过改变镜头电机的位置，比对清晰度，才能找到最清晰的位置。 实际上，网上有很多清晰度评估算法，在我们的产品SDK中，已经有现成的，通过DSP计算得到的图像清晰度评估值，所以就不再使用CPU软件算法实现。
+无论用什么方法计算，图像清晰度值曲线是一个具有单峰特性的曲线，也就是说，当该值是峰值时，图像是最清晰的。
+自动聚焦 自动对焦就是控制电机，找到这个峰值所在的位置。算法好坏决定了对焦准确度和速度。 网上的算法论文很多，比较经典的是爬山算法，我这个也是基于这个算法，针对电机特性做了一些修改。
+对焦速度： 最早的版本是拉到头，然后再往回拉，判断峰值，这样速度就很慢；改进版本先往一个方向拉，然后判断值，如果发现数据变小了，则反向，直到找到峰值，这样就加快了对焦速度。
+对焦准确度： 爬山算法大意是先以大步距控制电机，快速找到峰值，找到峰值后，下一次的总步数范围应在该峰值的上一站和下一个站之间；然后以小步距走，再次寻找峰值，同样按上述设置下一次走的总部数，逐渐逼近山峰，直到步距为最小步距时，所寻找到的峰值为最清晰的一个点。
+优化 速度 从大步距迭代到小步距，频繁的来回通过峰值，会造成过多的图像从&amp;rdquo;模糊&amp;rdquo;-&amp;gt;&amp;ldquo;清晰&amp;rdquo;，造成感觉不适。所以在一开始的时候，可以通过小步距判断下降或者上升的斜率，确定当前的大概位置，然后智能选用不同的步距向峰值靠近，加快对焦速度。
+峰值判断，如何判断峰值，如何抗干扰 网络上有个论文，判断峰值用数据连续下降2次的方法，一般是可行的. 但是在晚上图像噪声干扰或者有运动物体干扰时，该峰值就有可能不是真正的峰值了。个人觉得比较可行的是，数据连续2次下降一定范围。
+电机步距，上一站和下一站的取值 这个要根据电机特性进行尝试，取的好的话，事半功倍。 由于目前手头的电机不是太理想，怕有失步和越步（没有用电机控制芯片，直接CPU控制电机相位），所以站取值范围大一点，目前对焦一般在1.2s以内,电机可靠的话，相信可以做到0.7s以内。
+目前的问题 尽管在大部分场景下工作还挺可靠，速度也还凑活。但是还是有些问题还没解决的:
+抗干扰 图像清晰度评估值是针对同样的场景，不同的聚焦距离得到的数值曲线。如果场景发生了改变，即图像内容发生变化，此评估值和改变前评估值是没有比较意义的，因为这里有了2个变量，一个是聚焦本身的变量，另一个就是场景的变量了。有个简单的方法，就是如果图像有发生改变，则重新启动聚焦算法。但是由于项目的原因，也没有再深入解决这个问题了。</description>
+    </item>
+    
+  </channel>
+</rss>

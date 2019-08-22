@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  <meta name="author" content="Ryan.King">
+  
+  
+  
+  <link rel="prev" href="http://ryanking8215.github.io/2014/dont-strip-ko/" />
+  <link rel="next" href="http://ryanking8215.github.io/2014/live555-analyze/" />
+  <link rel="canonical" href="http://ryanking8215.github.io/2014/go-xml/" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           golang and xml | RyanKing&#39;s Blog
+       
+  </title>
+  <meta name="title" content="golang and xml | RyanKing&#39;s Blog">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  
+  
+ 
+
+<script type="application/ld+json">
+ "@context" : "http://schema.org",
+    "@type" : "BlogPosting",
+    "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "http:\/\/ryanking8215.github.io"
+    },
+    "articleSection" : "posts",
+    "name" : "golang and xml",
+    "headline" : "golang and xml",
+    "description" : "\x3cp\x3egolang使用encoding\/xml的\x3cstrong\x3eMarshal\x3c\/strong\x3e和\x3cstrong\x3eUnmarshal\x3c\/strong\x3e来处理xml。这个很简单，而且官网上都有例子。\n官网上的例子都是解析某个文件，文件的内容都是确定的；或者通过某个确定的struct来生成xml，struct的定义也是确定的。\x3c\/p\x3e\n\n\x3cp\x3e但是在处理网络协议的时候，协议是变化的，例如协议有协议头，有msg_type表示是request还是response,每个request和response\n根据不同的command，带有不同的content：比如command=\x26ldquo;do_a\x26rdquo;或\x26rdquo;do_b\x26rdquo;,带的content不一样，就算一样的command，request的content和\nresponse的content也不一样，那收到协议以后如何解析呢？连内容都确定不了，没有办法定义一个确定的struct去Unmarshal\x3c\/p\x3e",
+    "inLanguage" : "en-us",
+    "author" : "Ryan.King",
+    "creator" : "Ryan.King",
+    "publisher": "Ryan.King",
+    "accountablePerson" : "Ryan.King",
+    "copyrightHolder" : "Ryan.King",
+    "copyrightYear" : "2014",
+    "datePublished": "2014-10-04 22:13:33 \x2b0800 CST",
+    "dateModified" : "2014-10-04 22:13:33 \x2b0800 CST",
+    "url" : "http:\/\/ryanking8215.github.io\/2014\/go-xml\/",
+    "wordCount" : "19",
+    "keywords" : [ "golang","xml", "RyanKing\x27s Blog"]
+}
+</script>
+
+</head>
+
+  
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">golang and xml</h1>
+        <div class="post-meta">
+                Written by <a itemprop="name" href="http://ryanking8215.github.io" rel="author">Ryan.King</a> with ♥ 
+                <span class="post-time">
+                on <time datetime=2014-10-04 itemprop="datePublished">October 4, 2014</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="http://ryanking8215.github.io/categories/tech/"> Tech </a>
+                        
+                </span>
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          <p>golang使用encoding/xml的<strong>Marshal</strong>和<strong>Unmarshal</strong>来处理xml。这个很简单，而且官网上都有例子。
+官网上的例子都是解析某个文件，文件的内容都是确定的；或者通过某个确定的struct来生成xml，struct的定义也是确定的。</p>
+
+<p>但是在处理网络协议的时候，协议是变化的，例如协议有协议头，有msg_type表示是request还是response,每个request和response
+根据不同的command，带有不同的content：比如command=&ldquo;do_a&rdquo;或&rdquo;do_b&rdquo;,带的content不一样，就算一样的command，request的content和
+response的content也不一样，那收到协议以后如何解析呢？连内容都确定不了，没有办法定义一个确定的struct去Unmarshal</p>
+
+<h2 id="一开始的方法">一开始的方法</h2>
+
+<p>一开始想到的方法是用一个struct，把协议头，msg_type,command，request和response都包含在内，Unmarshal后
+按照msg_type和command,让调用者自行取content.这个都解析是每问题的，但是marshal时出现问题了，我填了request，但是
+response也marshal出来了。</p>
+
+<h2 id="omitempty">omitempty</h2>
+
+<p>查看文档，xml有一个omitempty的属性，针对golang的各类型的变量如果为初始值，则认为是empty,不marshal.但是在上述例子上，由于request
+and response都是内嵌在Message内的变量，所有就算content被omit了，但是rsp/req的标签还是存在的。so这个路子也走不通。</p>
+
+<h2 id="pointer-and-omitempty">pointer and omitempty</h2>
+
+<p>晚上看纸牌屋时，还在思考这个问题，突然灵光一闪，既然用omitempty，那指针如果为nil肯定被omit，那么把request和response变成指针就ok了。
+好的，marshal没问题了。但是unmarshal呢？由于是指针，是不是需要事先为它分配内存呢？做了一个实验，不分配内存，也没报错，难道是xml的package内部
+会new一个吗？没有去读源码考证，以后空下来去研究一下，这边存怀疑态度。</p>
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Ryan.King </span>
+                </p>
+            
+           
+             
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href=http://ryanking8215.github.io/2014/go-xml/>http://ryanking8215.github.io/2014/go-xml/</span>
+            </p>
+            
+             
+            <p class="copyright-item lincese">
+                本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可
+            </p>
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-tag"></i>Tag(s): 
+            
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/golang/">
+                    #golang</a></span>
+            
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/xml/">
+                    #xml</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">back</a></span> · 
+                <span><a href="http://ryanking8215.github.io">home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        <a href="http://ryanking8215.github.io/2014/dont-strip-ko/" class="prev" rel="prev" title="不要strip ko文件"><i class="iconfont icon-left"></i>&nbsp;不要strip ko文件</a>
+         
+        
+        <a href="http://ryanking8215.github.io/2014/live555-analyze/" class="next" rel="next" title="Live555源码分析">Live555源码分析&nbsp;<i class="iconfont icon-right"></i></a>
+        
+    </div>
+
+    <div class="post-comment">
+          
+                 
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2012 - 2019</span>
+        
+        <span class="with-love">
+    	 <i class="iconfont icon-love"></i> 
+         </span>
+         
+            <span class="author" itemprop="copyrightHolder"><a href="http://ryanking8215.github.io">Ryan.King</a> | </span> 
+         
+
+         
+		  <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    <script src="/js/vendor_no_gallery.min.js" async=""></script>
+    
+  
+
+
+
+     </div>
+  </body>
+</html>

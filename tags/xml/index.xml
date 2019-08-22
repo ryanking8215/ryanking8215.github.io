@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>xml on RyanKing&#39;s Blog</title>
+    <link>http://ryanking8215.github.io/tags/xml/</link>
+    <description>Recent content in xml on RyanKing&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 04 Oct 2014 22:13:33 +0800</lastBuildDate>
+    
+	<atom:link href="http://ryanking8215.github.io/tags/xml/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>golang and xml</title>
+      <link>http://ryanking8215.github.io/2014/go-xml/</link>
+      <pubDate>Sat, 04 Oct 2014 22:13:33 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/go-xml/</guid>
+      <description>&lt;p&gt;golang使用encoding/xml的&lt;strong&gt;Marshal&lt;/strong&gt;和&lt;strong&gt;Unmarshal&lt;/strong&gt;来处理xml。这个很简单，而且官网上都有例子。
+官网上的例子都是解析某个文件，文件的内容都是确定的；或者通过某个确定的struct来生成xml，struct的定义也是确定的。&lt;/p&gt;
+
+&lt;p&gt;但是在处理网络协议的时候，协议是变化的，例如协议有协议头，有msg_type表示是request还是response,每个request和response
+根据不同的command，带有不同的content：比如command=&amp;ldquo;do_a&amp;rdquo;或&amp;rdquo;do_b&amp;rdquo;,带的content不一样，就算一样的command，request的content和
+response的content也不一样，那收到协议以后如何解析呢？连内容都确定不了，没有办法定义一个确定的struct去Unmarshal&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

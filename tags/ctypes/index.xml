@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ctypes on RyanKing&#39;s Blog</title>
+    <link>http://ryanking8215.github.io/tags/ctypes/</link>
+    <description>Recent content in ctypes on RyanKing&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 20 Sep 2015 14:50:54 +0800</lastBuildDate>
+    
+	<atom:link href="http://ryanking8215.github.io/tags/ctypes/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>python ctypes</title>
+      <link>http://ryanking8215.github.io/2015/python-ctypes/</link>
+      <pubDate>Sun, 20 Sep 2015 14:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/python-ctypes/</guid>
+      <description>使用ctypes封装libpcap时的一些心得</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  <meta name="author" content="Ryan.King">
+  
+  
+  
+  <link rel="prev" href="http://ryanking8215.github.io/2014/user-encrpto/" />
+  <link rel="next" href="http://ryanking8215.github.io/2014/nodejs-buffer-c-string/" />
+  <link rel="canonical" href="http://ryanking8215.github.io/2014/nodejs-tcp-client/" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           如何使用nodejs撸一个tcp client | RyanKing&#39;s Blog
+       
+  </title>
+  <meta name="title" content="如何使用nodejs撸一个tcp client | RyanKing&#39;s Blog">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  
+  
+ 
+
+<script type="application/ld+json">
+ "@context" : "http://schema.org",
+    "@type" : "BlogPosting",
+    "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "http:\/\/ryanking8215.github.io"
+    },
+    "articleSection" : "posts",
+    "name" : "如何使用nodejs撸一个tcp client",
+    "headline" : "如何使用nodejs撸一个tcp client",
+    "description" : "\x3cp\x3e单看话题有点low,用nodejs撸一个tcp client不是秒秒钟的事情\n封装一个client，sock收到data后解析出msg，通过event通知调用端msg来了：\x3c\/p\x3e\n\n\x3cpre\x3e\x3ccode class=\x22language-javascript\x22\x3evar sock = net.createConnection(...);\nsock.on(\x27error\x27,function(){\n\t\n})\nsock.on(\x27data\x27,function(buf){\n\tvar msg = parse_data(buf)\n\tself.emit(\x27msg\x27,msg)\n})\n\x3c\/code\x3e\x3c\/pre\x3e\n\n\x3cp\x3e大意如此，不要在意细节。如果真是这样的话，那就没有必要撸这个博文了。\x3c\/p\x3e\n\n\x3cp\x3e首先要看封装的api到什么程度，client.sendRequest()之后如果什么都不干，光等msg过来，对于\n调用你client库的主来说真的是苦主了，一般client都有业务逻辑在，例如先connect(),再login(),\n然后再干嘛干嘛；也需要判断response，你都放在\x3ccode\x3eclient.on(\x27msg\x27,function(){...})\x3c\/code\x3e里，让别人情何以堪。\x3c\/p\x3e\n\n\x3cp\x3e那应该怎么做呢？\x3c\/p\x3e",
+    "inLanguage" : "en-us",
+    "author" : "Ryan.King",
+    "creator" : "Ryan.King",
+    "publisher": "Ryan.King",
+    "accountablePerson" : "Ryan.King",
+    "copyrightHolder" : "Ryan.King",
+    "copyrightYear" : "2014",
+    "datePublished": "2014-10-28 22:20:00 \x2b0800 CST",
+    "dateModified" : "2014-10-28 22:20:00 \x2b0800 CST",
+    "url" : "http:\/\/ryanking8215.github.io\/2014\/nodejs-tcp-client\/",
+    "wordCount" : "97",
+    "keywords" : [ "nodejs", "RyanKing\x27s Blog"]
+}
+</script>
+
+</head>
+
+  
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">如何使用nodejs撸一个tcp client</h1>
+        <div class="post-meta">
+                Written by <a itemprop="name" href="http://ryanking8215.github.io" rel="author">Ryan.King</a> with ♥ 
+                <span class="post-time">
+                on <time datetime=2014-10-28 itemprop="datePublished">October 28, 2014</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="http://ryanking8215.github.io/categories/tech/"> Tech </a>
+                        
+                </span>
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          <p>单看话题有点low,用nodejs撸一个tcp client不是秒秒钟的事情
+封装一个client，sock收到data后解析出msg，通过event通知调用端msg来了：</p>
+
+<pre><code class="language-javascript">var sock = net.createConnection(...);
+sock.on('error',function(){
+	
+})
+sock.on('data',function(buf){
+	var msg = parse_data(buf)
+	self.emit('msg',msg)
+})
+</code></pre>
+
+<p>大意如此，不要在意细节。如果真是这样的话，那就没有必要撸这个博文了。</p>
+
+<p>首先要看封装的api到什么程度，client.sendRequest()之后如果什么都不干，光等msg过来，对于
+调用你client库的主来说真的是苦主了，一般client都有业务逻辑在，例如先connect(),再login(),
+然后再干嘛干嘛；也需要判断response，你都放在<code>client.on('msg',function(){...})</code>里，让别人情何以堪。</p>
+
+<p>那应该怎么做呢？</p>
+
+<h3 id="api设计">API设计</h3>
+
+<p>我们让client api好用一点，一般是这样子的：</p>
+
+<pre><code class="language-javascript">client.sendRequest(msg,function(err,result){})
+</code></pre>
+
+<p>或者这样子的:</p>
+
+<pre><code class="language-javascript">client.sendRequest(msg) -&gt; Promise(result)
+</code></pre>
+
+<p>前者通过回调函数返回错误或结果，后者通过Promise返回，本质是一样的。
+因为server消息需要异步处理，所以我们需要callback或者promise来返回结果。</p>
+
+<h3 id="实现">实现</h3>
+
+<p>api的方式确定下来了，那么要研究如何实现了，假设用callback方式吧，这也是目前nodejs的api的标准格式。
+server的数据是通过socket的<code>data</code>事件来的，client.sendRequest(msg,cb)函数里，会有cb这个参数，如何把它们联系起来呢？
+只要收到消息之后执行cb()，就可以通知调用端了。回复消息的处理在另一个函数上下文里，如果能把cb搬过去，在那个函数上下文执行就好了。
+可以利用队列，当sendRequest()时，构建一个内部使用的request对象，将cb和请求参数塞入队列，
+在<code>data</code>的事件处理中，从队列依次取出request对象，比对请求参数和回复消息，然后可以执行cb()函数了，这样调用端就会得到结果了。</p>
+
+<p>用promise也是一样的，用defer代替cb，ok的就defer.resolve(result); 出现错误了就defer.reject(err)。
+了解promise的都知道我在说什么，^_^</p>
+
+<h3 id="buffer处理">buffer处理</h3>
+
+<p>tcp是流式的，没有消息边界，换言之，<code>data</code>事件回调里的buffer，不一定含有一条或者多条完整的协议消息，有可能是不完整的，有可能是多条完整加一点不完整的，
+总之不能做假设任何，这是tcp的粘包问题，这也是为什么tcp协议都会设定同步头，数据长度或者数据分隔符的原因。
+在收到data之后，需要和client的缓存拼接起来，看是否能parse出消息，如果能的，则需要把处理过的buffer都去除，
+未处理的buffer留下来的，以待后用。
+那如何维护这个缓存呢？看一下的demo</p>
+
+<pre><code class="language-javascript">
+Session.prototype.append = function(buf) {
+    if (!buf)
+        return
+
+    if (!this._buf) {
+        this._buf = buf
+        this._buf_len = buf.length
+        return
+    }
+
+    var left = this._buf.length - this._buf_len
+    if (left&gt;=buf.length) {
+        buf.copy(this._buf,this._buf_len)
+        this._buf_len+=buf.length
+        return
+    }
+    this._buf = Buffer.concat([this._buf.slice(0,this._buf_len),buf])
+    this._buf_len+=buf.length
+}
+</code></pre>
+
+<p>就是维护一个_buf和_buf_len，前者表示缓存，后者表示数据大小，不是缓存容量大小。遵循以下规则:
+- 如果没有，则新建。
+- 如果buffer剩余空间比当前buffer大，则把当前buffer的数据copy进缓存
+- 如果buffer剩余空间比当前buffer小，则将来缓存数据和buffer数据合并，作为新的缓存。</p>
+
+<p>消息处理只要用到内部缓存就可以了。
+这样在一定程度上避免了频繁申请内存。
+但是频繁申请内存还是逃避不了，因为libuv在底层会一直接受数据，否则你以为回调函数里的buffer是哪里来的
+这个和reactor模式不同，nodejs可以通过sock.pause(),sock.resume()控制接收速度，让内存不要增加太快。</p>
+
+<p>另外由于v8对gc不那么积极，而且buffer的内存在v8的heap外，这样buffer会释放的更慢。
+开源项目<a href="https://github.com/clowwindy/shadowsocks-nodejs" rel="nofollow noreferrer" target="_blank">shadowsock-nodejs</a>，作者之前因为内存暴涨问题，放弃了该版本。
+不清楚nodejs对内存暴涨如何解决。本来nodejs最擅长的就是干这个事情，结果因为这个原因，反而不合适，是比较遗憾的。</p>
+
+<p>欢迎大家探讨！</p>
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Ryan.King </span>
+                </p>
+            
+           
+             
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href=http://ryanking8215.github.io/2014/nodejs-tcp-client/>http://ryanking8215.github.io/2014/nodejs-tcp-client/</span>
+            </p>
+            
+             
+            <p class="copyright-item lincese">
+                本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可
+            </p>
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-tag"></i>Tag(s): 
+            
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/nodejs/">
+                    #nodejs</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">back</a></span> · 
+                <span><a href="http://ryanking8215.github.io">home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        <a href="http://ryanking8215.github.io/2014/user-encrpto/" class="prev" rel="prev" title="用户认证加密方法"><i class="iconfont icon-left"></i>&nbsp;用户认证加密方法</a>
+         
+        
+        <a href="http://ryanking8215.github.io/2014/nodejs-buffer-c-string/" class="next" rel="next" title="nodejs的buffer和c string">nodejs的buffer和c string&nbsp;<i class="iconfont icon-right"></i></a>
+        
+    </div>
+
+    <div class="post-comment">
+          
+                 
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2012 - 2019</span>
+        
+        <span class="with-love">
+    	 <i class="iconfont icon-love"></i> 
+         </span>
+         
+            <span class="author" itemprop="copyrightHolder"><a href="http://ryanking8215.github.io">Ryan.King</a> | </span> 
+         
+
+         
+		  <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    <script src="/js/vendor_no_gallery.min.js" async=""></script>
+    
+  
+
+
+
+     </div>
+  </body>
+</html>

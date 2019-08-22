@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nodejs on RyanKing&#39;s Blog</title>
+    <link>http://ryanking8215.github.io/tags/nodejs/</link>
+    <description>Recent content in nodejs on RyanKing&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 10 Nov 2014 21:20:12 +0800</lastBuildDate>
+    
+	<atom:link href="http://ryanking8215.github.io/tags/nodejs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用n管理nodejs的版本</title>
+      <link>http://ryanking8215.github.io/2014/n-nodejs-version/</link>
+      <pubDate>Mon, 10 Nov 2014 21:20:12 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/n-nodejs-version/</guid>
+      <description>nodejs多版本共存</description>
+    </item>
+    
+    <item>
+      <title>nodejs的buffer和c string</title>
+      <link>http://ryanking8215.github.io/2014/nodejs-buffer-c-string/</link>
+      <pubDate>Fri, 31 Oct 2014 19:13:42 +0000</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/nodejs-buffer-c-string/</guid>
+      <description>nodejs的buffer和c string如何转换,二进制协议用得到</description>
+    </item>
+    
+    <item>
+      <title>如何使用nodejs撸一个tcp client</title>
+      <link>http://ryanking8215.github.io/2014/nodejs-tcp-client/</link>
+      <pubDate>Tue, 28 Oct 2014 22:20:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2014/nodejs-tcp-client/</guid>
+      <description>&lt;p&gt;单看话题有点low,用nodejs撸一个tcp client不是秒秒钟的事情
+封装一个client，sock收到data后解析出msg，通过event通知调用端msg来了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var sock = net.createConnection(...);
+sock.on(&#39;error&#39;,function(){
+	
+})
+sock.on(&#39;data&#39;,function(buf){
+	var msg = parse_data(buf)
+	self.emit(&#39;msg&#39;,msg)
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大意如此，不要在意细节。如果真是这样的话，那就没有必要撸这个博文了。&lt;/p&gt;
+
+&lt;p&gt;首先要看封装的api到什么程度，client.sendRequest()之后如果什么都不干，光等msg过来，对于
+调用你client库的主来说真的是苦主了，一般client都有业务逻辑在，例如先connect(),再login(),
+然后再干嘛干嘛；也需要判断response，你都放在&lt;code&gt;client.on(&#39;msg&#39;,function(){...})&lt;/code&gt;里，让别人情何以堪。&lt;/p&gt;
+
+&lt;p&gt;那应该怎么做呢？&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

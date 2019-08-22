@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>python on RyanKing&#39;s Blog</title>
+    <link>http://ryanking8215.github.io/tags/python/</link>
+    <description>Recent content in python on RyanKing&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 17 Jan 2016 14:50:54 +0800</lastBuildDate>
+    
+	<atom:link href="http://ryanking8215.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>python3.5 交叉编译</title>
+      <link>http://ryanking8215.github.io/2016/python35-cross-compile/</link>
+      <pubDate>Sun, 17 Jan 2016 14:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2016/python35-cross-compile/</guid>
+      <description>交叉编译python3.5.1, 用于嵌入式系统。</description>
+    </item>
+    
+    <item>
+      <title>Django下通过form创建model对象如何隐藏不必要的field</title>
+      <link>http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/</link>
+      <pubDate>Sun, 25 Oct 2015 10:00:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/</guid>
+      <description>由一个一对多关系由form创建model对象想到的。 提供了2种方法。</description>
+    </item>
+    
+    <item>
+      <title>python ctypes</title>
+      <link>http://ryanking8215.github.io/2015/python-ctypes/</link>
+      <pubDate>Sun, 20 Sep 2015 14:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/python-ctypes/</guid>
+      <description>使用ctypes封装libpcap时的一些心得</description>
+    </item>
+    
+    <item>
+      <title>资源，认证，鉴权和python的装饰器</title>
+      <link>http://ryanking8215.github.io/2015/py-decorate/</link>
+      <pubDate>Sun, 12 Apr 2015 16:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/py-decorate/</guid>
+      <description>在一个web项目中使用python装饰器的经验</description>
+    </item>
+    
+    <item>
+      <title>pyramid and flask</title>
+      <link>http://ryanking8215.github.io/2015/pyramid-and-flask/</link>
+      <pubDate>Mon, 06 Apr 2015 16:13:40 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/pyramid-and-flask/</guid>
+      <description>还没到&amp;rdquo;vs.&amp;ldquo;的境界，只好用&amp;rdquo;and&amp;rdquo;了, -)</description>
+    </item>
+    
+  </channel>
+</rss>

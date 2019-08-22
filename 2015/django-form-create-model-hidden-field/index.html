@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  <meta name="author" content="Ryan.King">
+  
+  
+  
+  <link rel="prev" href="http://ryanking8215.github.io/2015/python-ctypes/" />
+  <link rel="next" href="http://ryanking8215.github.io/2016/python35-cross-compile/" />
+  <link rel="canonical" href="http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           Django下通过form创建model对象如何隐藏不必要的field | RyanKing&#39;s Blog
+       
+  </title>
+  <meta name="title" content="Django下通过form创建model对象如何隐藏不必要的field | RyanKing&#39;s Blog">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  
+  
+ 
+
+<script type="application/ld+json">
+ "@context" : "http://schema.org",
+    "@type" : "BlogPosting",
+    "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "http:\/\/ryanking8215.github.io"
+    },
+    "articleSection" : "posts",
+    "name" : "Django下通过form创建model对象如何隐藏不必要的field",
+    "headline" : "Django下通过form创建model对象如何隐藏不必要的field",
+    "description" : "由一个一对多关系由form创建model对象想到的。 提供了2种方法。",
+    "inLanguage" : "en-us",
+    "author" : "Ryan.King",
+    "creator" : "Ryan.King",
+    "publisher": "Ryan.King",
+    "accountablePerson" : "Ryan.King",
+    "copyrightHolder" : "Ryan.King",
+    "copyrightYear" : "2015",
+    "datePublished": "2015-10-25 10:00:00 \x2b0800 CST",
+    "dateModified" : "2015-10-25 10:00:00 \x2b0800 CST",
+    "url" : "http:\/\/ryanking8215.github.io\/2015\/django-form-create-model-hidden-field\/",
+    "wordCount" : "170",
+    "keywords" : [ "python","django", "RyanKing\x27s Blog"]
+}
+</script>
+
+</head>
+
+  
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Django下通过form创建model对象如何隐藏不必要的field</h1>
+        <div class="post-meta">
+                Written by <a itemprop="name" href="http://ryanking8215.github.io" rel="author">Ryan.King</a> with ♥ 
+                <span class="post-time">
+                on <time datetime=2015-10-25 itemprop="datePublished">October 25, 2015</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="http://ryanking8215.github.io/categories/tech/"> Tech </a>
+                        
+                </span>
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          
+
+<h1 id="简述">简述</h1>
+
+<p>例如Model A和Model S是一对多的关系，即A是one， S是many, 使用<code>ForeignKey</code>来定义</p>
+
+<pre><code class="language-python">class A(models.Model):
+  name = models.CharFields(max_length=64)
+
+class S(models.Model):
+  name = models.CharFields(max_length=64)
+  a = models.ForeignKey(A)
+</code></pre>
+
+<p>在某个页面创建S的时候，需要指定是哪个A。 如果为A和S注册了admin，那么在admin-site里创建S的时候，会看到需要选择哪个A的实例，它会把所有的A的记录都列出来</p>
+
+<p>但这个是针对admin的，不是针对业务的，如果一个用户想为他名下的某个A资源建立一个S的资源，那么把所有A的记录都列出来是不合适的，也不安全；实际上例如<code>POST /A/1/S/create</code>这样的url已经含了A的主键，在创建S的时候只需要为a field赋值即可，而且是自动的，不需要用户选择。</p>
+
+<h1 id="策略">策略</h1>
+
+<p>就是在创建S的时候，不能把a的field暴露出来，并且根据url里的A的主键，将a赋值为A.objects.get(pk=1)即可。</p>
+
+<h2 id="方法1">方法1</h2>
+
+<p>直接使用<code>CreateView</code>，model为S，form暴露的fields需要包括<code>a</code>，在获取form初始值时，将<code>a</code>赋值。form在render的时候，需要隐藏<code>a field</code>，需要自定义各form的field，不能使用form.as_p()等。</p>
+
+<pre><code class="language-python">class SCreateView(CreateView):
+    model = S
+    fields = {'name','a'}
+    success_url = 'myurl'
+    template_name = 's_add.html'
+
+    def get(self, request, *args, **kwargs):
+        # 这里根据url参数获取A的对象
+        self.a_object = A.objects.get(pk=kwargs['a_id'])
+
+    def get_initial(self):
+        # 这里这样默认的form里a field就有值了。
+        return {'a':self.a_object.pk}
+</code></pre>
+
+<h2 id="方法2">方法2</h2>
+
+<p>使用<code>SignalObjectMixin</code>和<code>FormView</code>的组合，<code>SignalObjectMixin</code>是为了获取<code>A</code>的对象，FormView用于处理form的get和post。特别是post，我们的Form不需要有<code>a field</code>，在form_valid()里，通过<code>form.save(commit=False)</code>来创建一个S对象，但是该对象还没有持久化，然后为该对象的<code>a field</code>赋值为self.object.pk(通过SignalObjectMixin)即可，然后调用s.save()即可。</p>
+
+<pre><code class="language-python">class SForm(form.ModelForm):
+    class Meta:
+        model = S
+        fields = {'name'}
+
+class SCreateView(SingleObjectMixin, FormView):
+    model = A
+    form_class = SForm
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super(SCreateView, self).get(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(SCreateView, self).get_context_data(**kwargs)
+        context['form'] = self.form_class()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super(SCreateView, self).post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        # commit为False，创建一个未持久化对象
+        s = form.save(commit=False)
+        # 为s的隐藏field赋值
+        s.a = self.object
+        # 持久化
+        s.save()
+        # 后续处理
+        return super.form_valid(self, form)
+</code></pre>
+
+<h2 id="方法3">方法3</h2>
+
+<p>继承<code>CreateView</code>,重写<code>form_valid()</code>。</p>
+
+<pre><code class="language-python">from django.views.generic.edit import CreateView
+from myapp.models import Author
+
+class SCreate(CreateView):
+    model = S
+    fields = ['name']
+
+    def form_valid(self, form):
+        # a_object可以从其他地方获取,例如url等获取a的对象，关键是form.instance，因为这个form是ModelForm，为该instance的成员赋值，然后通过super()方法去save即可。
+        form.instance.a = self.a_object
+        return super(SCreate, self).form_valid(form)
+</code></pre>
+
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Ryan.King </span>
+                </p>
+            
+           
+             
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href=http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/>http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/</span>
+            </p>
+            
+             
+            <p class="copyright-item lincese">
+                本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可
+            </p>
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-tag"></i>Tag(s): 
+            
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/python/">
+                    #python</a></span>
+            
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/django/">
+                    #django</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">back</a></span> · 
+                <span><a href="http://ryanking8215.github.io">home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        <a href="http://ryanking8215.github.io/2015/python-ctypes/" class="prev" rel="prev" title="python ctypes"><i class="iconfont icon-left"></i>&nbsp;python ctypes</a>
+         
+        
+        <a href="http://ryanking8215.github.io/2016/python35-cross-compile/" class="next" rel="next" title="python3.5 交叉编译">python3.5 交叉编译&nbsp;<i class="iconfont icon-right"></i></a>
+        
+    </div>
+
+    <div class="post-comment">
+          
+                 
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2012 - 2019</span>
+        
+        <span class="with-love">
+    	 <i class="iconfont icon-love"></i> 
+         </span>
+         
+            <span class="author" itemprop="copyrightHolder"><a href="http://ryanking8215.github.io">Ryan.King</a> | </span> 
+         
+
+         
+		  <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    <script src="/js/vendor_no_gallery.min.js" async=""></script>
+    
+  
+
+
+
+     </div>
+  </body>
+</html>

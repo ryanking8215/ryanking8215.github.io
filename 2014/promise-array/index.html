@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  <meta name="author" content="Ryan.King">
+  
+  
+  
+  <link rel="prev" href="http://ryanking8215.github.io/2014/abstract-factory/" />
+  <link rel="next" href="http://ryanking8215.github.io/2014/promise-careful/" />
+  <link rel="canonical" href="http://ryanking8215.github.io/2014/promise-array/" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           promise处理数组 | RyanKing&#39;s Blog
+       
+  </title>
+  <meta name="title" content="promise处理数组 | RyanKing&#39;s Blog">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  
+  
+ 
+
+<script type="application/ld+json">
+ "@context" : "http://schema.org",
+    "@type" : "BlogPosting",
+    "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "http:\/\/ryanking8215.github.io"
+    },
+    "articleSection" : "posts",
+    "name" : "promise处理数组",
+    "headline" : "promise处理数组",
+    "description" : "使用promise处理数组的方法和要注意的问题",
+    "inLanguage" : "en-us",
+    "author" : "Ryan.King",
+    "creator" : "Ryan.King",
+    "publisher": "Ryan.King",
+    "accountablePerson" : "Ryan.King",
+    "copyrightHolder" : "Ryan.King",
+    "copyrightYear" : "2014",
+    "datePublished": "2014-10-05 16:47:03 \x2b0800 CST",
+    "dateModified" : "2014-10-05 16:47:03 \x2b0800 CST",
+    "url" : "http:\/\/ryanking8215.github.io\/2014\/promise-array\/",
+    "wordCount" : "55",
+    "keywords" : [ "javascript", "RyanKing\x27s Blog"]
+}
+</script>
+
+</head>
+
+  
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">promise处理数组</h1>
+        <div class="post-meta">
+                Written by <a itemprop="name" href="http://ryanking8215.github.io" rel="author">Ryan.King</a> with ♥ 
+                <span class="post-time">
+                on <time datetime=2014-10-05 itemprop="datePublished">October 5, 2014</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="http://ryanking8215.github.io/categories/tech/"> Tech </a>
+                        
+                </span>
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          
+
+<p>promise 使用bluebird，现在要求按照数组顺序启动异步任务，也即等待一个promise被settled后再执行下一个。
+有什么方法吗？难道按照数组写死一个个的then吗？
+<!-- more --></p>
+
+<h3 id="promise-map">Promise.map()</h3>
+
+<p>Promise.map() 是按顺序迭代数组，但是异步任务仍旧是并发执行的。不符合条件。</p>
+
+<h3 id="递归">递归</h3>
+
+<pre><code class="language-javascript">var array = ['a1','a2','a3','a4']
+
+return (function handle_array(idx){
+    idx = idx || 0
+    if (idx&gt;=array.length) {
+        return
+    }
+    return async_task(id,array[idx])
+    .then(function(result){
+        idx++;
+        return handle_array(idx);
+    })
+})()
+</code></pre>
+
+<h3 id="利用promise对象迭代">利用promise对象迭代</h3>
+
+<pre><code class="language-javascript">var promise = Promise.resolve()
+array.forEach(function(v){
+    console.log(v)
+    promise = promise.then(function(){
+        return async_task(v)
+    })
+    .then(function(v){
+        console.log(v)
+    })
+})
+promise.then(function(){
+    console.log('done')
+})
+</code></pre>
+
+<p>可能还有其他方法。
+个人感觉递归更自然一点。
+第二种方法要记住promise可以先返回，但是按照顺序被resolved后再执行下一个的。</p>
+
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Ryan.King </span>
+                </p>
+            
+           
+             
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href=http://ryanking8215.github.io/2014/promise-array/>http://ryanking8215.github.io/2014/promise-array/</span>
+            </p>
+            
+             
+            <p class="copyright-item lincese">
+                本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可
+            </p>
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-tag"></i>Tag(s): 
+            
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/javascript/">
+                    #javascript</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">back</a></span> · 
+                <span><a href="http://ryanking8215.github.io">home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        <a href="http://ryanking8215.github.io/2014/abstract-factory/" class="prev" rel="prev" title="抽象工厂模式"><i class="iconfont icon-left"></i>&nbsp;抽象工厂模式</a>
+         
+        
+        <a href="http://ryanking8215.github.io/2014/promise-careful/" class="next" rel="next" title="promise要注意的地方">promise要注意的地方&nbsp;<i class="iconfont icon-right"></i></a>
+        
+    </div>
+
+    <div class="post-comment">
+          
+                 
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2012 - 2019</span>
+        
+        <span class="with-love">
+    	 <i class="iconfont icon-love"></i> 
+         </span>
+         
+            <span class="author" itemprop="copyrightHolder"><a href="http://ryanking8215.github.io">Ryan.King</a> | </span> 
+         
+
+         
+		  <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    <script src="/js/vendor_no_gallery.min.js" async=""></script>
+    
+  
+
+
+
+     </div>
+  </body>
+</html>

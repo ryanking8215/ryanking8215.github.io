@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  <meta name="author" content="Ryan.King">
+  
+  
+  
+  <link rel="prev" href="http://ryanking8215.github.io/2014/nodejs-tcp-client/" />
+  <link rel="next" href="http://ryanking8215.github.io/2014/n-nodejs-version/" />
+  <link rel="canonical" href="http://ryanking8215.github.io/2014/nodejs-buffer-c-string/" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           nodejs的buffer和c string | RyanKing&#39;s Blog
+       
+  </title>
+  <meta name="title" content="nodejs的buffer和c string | RyanKing&#39;s Blog">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  
+  
+ 
+
+<script type="application/ld+json">
+ "@context" : "http://schema.org",
+    "@type" : "BlogPosting",
+    "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "http:\/\/ryanking8215.github.io"
+    },
+    "articleSection" : "posts",
+    "name" : "nodejs的buffer和c string",
+    "headline" : "nodejs的buffer和c string",
+    "description" : "nodejs的buffer和c string如何转换,二进制协议用得到",
+    "inLanguage" : "en-us",
+    "author" : "Ryan.King",
+    "creator" : "Ryan.King",
+    "publisher": "Ryan.King",
+    "accountablePerson" : "Ryan.King",
+    "copyrightHolder" : "Ryan.King",
+    "copyrightYear" : "2014",
+    "datePublished": "2014-10-31 19:13:42 \x2b0000 UTC",
+    "dateModified" : "2014-10-31 19:13:42 \x2b0000 UTC",
+    "url" : "http:\/\/ryanking8215.github.io\/2014\/nodejs-buffer-c-string\/",
+    "wordCount" : "35",
+    "keywords" : [ "nodejs", "RyanKing\x27s Blog"]
+}
+</script>
+
+</head>
+
+  
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">nodejs的buffer和c string</h1>
+        <div class="post-meta">
+                Written by <a itemprop="name" href="http://ryanking8215.github.io" rel="author">Ryan.King</a> with ♥ 
+                <span class="post-time">
+                on <time datetime=2014-10-31 itemprop="datePublished">October 31, 2014</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="http://ryanking8215.github.io/categories/tech/"> Tech </a>
+                        
+                </span>
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          
+
+<p>设备上有现成的二进制通信协议，nodejs作为客户端连接上去发送请求得到响应。
+其中有协议是传送字符串，用<code>c struct</code>表示就是</p>
+
+<pre><code class="language-c">struct Response {
+    uint32_t value;
+    char name[64];
+};
+</code></pre>
+
+<p>因为c string以&rsquo;\0&rsquo;为结束，为了协议到c的对端能开箱即用，name最多存63个字节。</p>
+
+<p>node客户端收到数据后，用buffer来处理，转换成response对象</p>
+
+<pre><code class="language-javascript">{
+    value: {number}
+    name: {string}
+}
+</code></pre>
+
+<p>buf转string的函数是 <code>buf.toString()</code>，但是得到的数据类似于</p>
+
+<pre><code class="language-javascript">'h','e','l','l','o','\u0000','\u0000'
+</code></pre>
+
+<p>因为js的string不是以&rsquo;\0&rsquo;结束，它把后面的都处理为字符串的一部分，所以我们要处理一下：</p>
+
+<pre><code class="language-javascript">name = name.substring(0,name.indexOf('\u0000'))
+</code></pre>
+
+<p>这样就ok了</p>
+
+<h3 id="编码问题">编码问题</h3>
+
+<p>默认的hex和utf8,nodejs的buffer api都能处理，但是如果是其他编码呢？比如由于历史原因，设备上
+传输的中文编码是gb2312。
+很幸运的是，npm里有iconv-lite的package，它能将不同的编码从string-&gt;buffer, buffer-&gt;string的转换。
+用它就能开心的撸了！</p>
+
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Ryan.King </span>
+                </p>
+            
+           
+             
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href=http://ryanking8215.github.io/2014/nodejs-buffer-c-string/>http://ryanking8215.github.io/2014/nodejs-buffer-c-string/</span>
+            </p>
+            
+             
+            <p class="copyright-item lincese">
+                本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可
+            </p>
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-tag"></i>Tag(s): 
+            
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/nodejs/">
+                    #nodejs</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">back</a></span> · 
+                <span><a href="http://ryanking8215.github.io">home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        <a href="http://ryanking8215.github.io/2014/nodejs-tcp-client/" class="prev" rel="prev" title="如何使用nodejs撸一个tcp client"><i class="iconfont icon-left"></i>&nbsp;如何使用nodejs撸一个tcp client</a>
+         
+        
+        <a href="http://ryanking8215.github.io/2014/n-nodejs-version/" class="next" rel="next" title="使用n管理nodejs的版本">使用n管理nodejs的版本&nbsp;<i class="iconfont icon-right"></i></a>
+        
+    </div>
+
+    <div class="post-comment">
+          
+                 
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2012 - 2019</span>
+        
+        <span class="with-love">
+    	 <i class="iconfont icon-love"></i> 
+         </span>
+         
+            <span class="author" itemprop="copyrightHolder"><a href="http://ryanking8215.github.io">Ryan.King</a> | </span> 
+         
+
+         
+		  <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    <script src="/js/vendor_no_gallery.min.js" async=""></script>
+    
+  
+
+
+
+     </div>
+  </body>
+</html>

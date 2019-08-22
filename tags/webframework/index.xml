@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>webframework on RyanKing&#39;s Blog</title>
+    <link>http://ryanking8215.github.io/tags/webframework/</link>
+    <description>Recent content in webframework on RyanKing&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 06 Apr 2015 16:13:40 +0800</lastBuildDate>
+    
+	<atom:link href="http://ryanking8215.github.io/tags/webframework/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>pyramid and flask</title>
+      <link>http://ryanking8215.github.io/2015/pyramid-and-flask/</link>
+      <pubDate>Mon, 06 Apr 2015 16:13:40 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/pyramid-and-flask/</guid>
+      <description>还没到&amp;rdquo;vs.&amp;ldquo;的境界，只好用&amp;rdquo;and&amp;rdquo;了, -)</description>
+    </item>
+    
+  </channel>
+</rss>

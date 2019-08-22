@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  <meta name="author" content="Ryan.King">
+  
+  
+  
+  <link rel="prev" href="http://ryanking8215.github.io/2014/n-nodejs-version/" />
+  <link rel="next" href="http://ryanking8215.github.io/2015/py-decorate/" />
+  <link rel="canonical" href="http://ryanking8215.github.io/2015/pyramid-and-flask/" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           pyramid and flask | RyanKing&#39;s Blog
+       
+  </title>
+  <meta name="title" content="pyramid and flask | RyanKing&#39;s Blog">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  
+  
+ 
+
+<script type="application/ld+json">
+ "@context" : "http://schema.org",
+    "@type" : "BlogPosting",
+    "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "http:\/\/ryanking8215.github.io"
+    },
+    "articleSection" : "posts",
+    "name" : "pyramid and flask",
+    "headline" : "pyramid and flask",
+    "description" : "还没到\x26rdquo;vs.\x26ldquo;的境界，只好用\x26rdquo;and\x26rdquo;了, -)",
+    "inLanguage" : "en-us",
+    "author" : "Ryan.King",
+    "creator" : "Ryan.King",
+    "publisher": "Ryan.King",
+    "accountablePerson" : "Ryan.King",
+    "copyrightHolder" : "Ryan.King",
+    "copyrightYear" : "2015",
+    "datePublished": "2015-04-06 16:13:40 \x2b0800 CST",
+    "dateModified" : "2015-04-06 16:13:40 \x2b0800 CST",
+    "url" : "http:\/\/ryanking8215.github.io\/2015\/pyramid-and-flask\/",
+    "wordCount" : "37",
+    "keywords" : [ "webframework","python", "RyanKing\x27s Blog"]
+}
+</script>
+
+</head>
+
+  
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">pyramid and flask</h1>
+        <div class="post-meta">
+                Written by <a itemprop="name" href="http://ryanking8215.github.io" rel="author">Ryan.King</a> with ♥ 
+                <span class="post-time">
+                on <time datetime=2015-04-06 itemprop="datePublished">April 6, 2015</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="http://ryanking8215.github.io/categories/tech/"> Tech </a>
+                        
+                </span>
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          
+
+<p>有个企业内部项目，restful api，mysql, digest authentication.
+python很早就用了，写一些维护的脚本和验证一些算法，简单明了，不用考虑c/c++的内存管理。
+但是web开发还是第一次，事先了解了一些python下的web framework</p>
+
+<ul>
+<li>web.py</li>
+<li>bottle</li>
+<li>flask</li>
+<li>pyramid</li>
+<li>django</li>
+</ul>
+
+<p>因为ORM使用sqlalchemy，所以先踢掉了django；web.py因为python3和创始人的原因，不再考虑；bottle太过简单，学习可以，用在工程上可能欠妥，也排除；留下了flask和pyramid，flask名气更响，资源更多，但是在简单了解了pyramid后，使用pyramid来开展项目，当然之后由于某些原因又换到了flask，所以把这2个框架的使用和区别做一些记录，以供参考，当然，由于初次接触web框架，难免会有疏漏和错误，望海涵。</p>
+
+<h2 id="路由">路由</h2>
+
+<p>pyramid把url设置为一个唯一string,然后将hanlder绑定在该string上。几乎所有的配置均可通过装饰器解决，除了url本身，你可以指定method,query strings来绑定具体的handler，不用进一个进口，然后根据query stirng或者method来区分。</p>
+
+<p>flask使用装饰器直接将url绑定在handler上，无论是使用app还是blueprint。支持继承view的方式来设定handler，我用的最多的就是MethodView。</p>
+
+<h2 id="模板">模板</h2>
+
+<p>pyramid默认模板是mako；flask默认模板是jinjia2。按照jinjia2的说法，两者性能差不多，好像周遭用jinjia2的更多一点。两者均支持更换第三方模板。</p>
+
+<p>pyramid支持将模板render功能写在装饰器里，而flask需要显式调用<code>render_template()</code>,我的项目返回json数据，pyramid支持内置的<code>render='json'</code>,而flask需要显式调用<code>jsonify</code>,后来项目换成flask的时候，也如法炮制，将render做成了装饰器。</p>
+
+<h2 id="测试">测试</h2>
+
+<p>两者的测试哲学不同。</p>
+
+<p>pyramid因为处理函数返回的数据是dict，所以，它的测试是直接对处理函数测试，将req填好数据，然后直接调用处理函数，得到dict，再验证dict正确性。</p>
+
+<p>flask需要一个请求上下文来测试，也可以说是模拟一个请求客户端，填入真正的url和数据，返回的也是真的数据，而不是中间数据。</p>
+
+<p>各有利弊，pyramid的这种方式测不到路由是否正确，flask如果用模板render,得到html，验证数据比较麻烦。</p>
+
+<h2 id="python3支持">python3支持</h2>
+
+<p>按照各自官网的说法，pyramid对python3完全支持。</p>
+
+<p>flask本身支持，但是它认为好多add-on仍旧是python2,所以还是推荐python2.</p>
+
+<h2 id="更多">更多</h2>
+
+<p>pyramid对web还有更多的框架定义，例如<code>security</code>,支持认证和权限等等。</p>
+
+<p>flask更内聚一点，额外功能用addon实现。</p>
+
+<h2 id="总结">总结</h2>
+
+<p>两者都是优秀的框架，项目换成flask不是因为flask比pyramid好，只是flask中文资源更多一点，因为初入web,找help更简单一点。
+其实，pyramid的config装饰器功能强大，几乎配置均可以写在装饰器里，包括method，query string，render资源，不仅仅是url本身，我喜欢这种方式，似乎其他的web框架都没有这么强大的配置装饰器。
+作为初入者，我不太明白为什么flask比pyramid更流行，从最后展现的框架上看，我认为pyramid更好，更符合工程需求，更完善。</p>
+
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Ryan.King </span>
+                </p>
+            
+           
+             
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href=http://ryanking8215.github.io/2015/pyramid-and-flask/>http://ryanking8215.github.io/2015/pyramid-and-flask/</span>
+            </p>
+            
+             
+            <p class="copyright-item lincese">
+                本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可
+            </p>
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-tag"></i>Tag(s): 
+            
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/webframework/">
+                    #webframework</a></span>
+            
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/python/">
+                    #python</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">back</a></span> · 
+                <span><a href="http://ryanking8215.github.io">home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        <a href="http://ryanking8215.github.io/2014/n-nodejs-version/" class="prev" rel="prev" title="使用n管理nodejs的版本"><i class="iconfont icon-left"></i>&nbsp;使用n管理nodejs的版本</a>
+         
+        
+        <a href="http://ryanking8215.github.io/2015/py-decorate/" class="next" rel="next" title="资源，认证，鉴权和python的装饰器">资源，认证，鉴权和python的装饰器&nbsp;<i class="iconfont icon-right"></i></a>
+        
+    </div>
+
+    <div class="post-comment">
+          
+                 
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2012 - 2019</span>
+        
+        <span class="with-love">
+    	 <i class="iconfont icon-love"></i> 
+         </span>
+         
+            <span class="author" itemprop="copyrightHolder"><a href="http://ryanking8215.github.io">Ryan.King</a> | </span> 
+         
+
+         
+		  <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    <script src="/js/vendor_no_gallery.min.js" async=""></script>
+    
+  
+
+
+
+     </div>
+  </body>
+</html>

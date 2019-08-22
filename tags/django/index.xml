@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>django on RyanKing&#39;s Blog</title>
+    <link>http://ryanking8215.github.io/tags/django/</link>
+    <description>Recent content in django on RyanKing&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 25 Oct 2015 10:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="http://ryanking8215.github.io/tags/django/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Django下通过form创建model对象如何隐藏不必要的field</title>
+      <link>http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/</link>
+      <pubDate>Sun, 25 Oct 2015 10:00:00 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/</guid>
+      <description>由一个一对多关系由form创建model对象想到的。 提供了2种方法。</description>
+    </item>
+    
+  </channel>
+</rss>

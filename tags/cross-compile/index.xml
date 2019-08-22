@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cross-compile on RyanKing&#39;s Blog</title>
+    <link>http://ryanking8215.github.io/tags/cross-compile/</link>
+    <description>Recent content in cross-compile on RyanKing&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 17 Jan 2016 14:50:54 +0800</lastBuildDate>
+    
+	<atom:link href="http://ryanking8215.github.io/tags/cross-compile/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>python3.5 交叉编译</title>
+      <link>http://ryanking8215.github.io/2016/python35-cross-compile/</link>
+      <pubDate>Sun, 17 Jan 2016 14:50:54 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2016/python35-cross-compile/</guid>
+      <description>交叉编译python3.5.1, 用于嵌入式系统。</description>
+    </item>
+    
+  </channel>
+</rss>
