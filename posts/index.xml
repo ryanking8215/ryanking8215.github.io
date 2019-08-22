@@ -12,13 +12,12 @@
     
     
     <item>
-      <title>My First Post</title>
-      <link>http://ryanking8215.github.io/2019/my-first-post/</link>
+      <title>Test Hugo</title>
+      <link>http://ryanking8215.github.io/2019/test_hugo/</link>
       <pubDate>Mon, 19 Aug 2019 18:37:51 +0800</pubDate>
       
-      <guid>http://ryanking8215.github.io/2019/my-first-post/</guid>
-      <description>| kk | jj | bb | | &amp;ndash; | &amp;ndash; | &amp;ndash; | | 1 | 2 | 3 | | 11 | 22 | 33 |
-package main import &amp;quot;fmt&amp;quot; func main() { fmt.Println(&amp;quot;hello, world&amp;quot;) }  </description>
+      <guid>http://ryanking8215.github.io/2019/test_hugo/</guid>
+      <description>   kk jj bb     1 2 3   11 22 33    package main import &amp;quot;fmt&amp;quot; func main() { fmt.Println(&amp;quot;hello, world&amp;quot;) }  </description>
     </item>
     
     <item>

@@ -9,15 +9,34 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>My First Post</title>
-      <link>http://ryanking8215.github.io/2019/my-first-post/</link>
+      <title>Test Hugo</title>
+      <link>http://ryanking8215.github.io/2019/test_hugo/</link>
       <pubDate>Mon, 19 Aug 2019 18:37:51 +0800</pubDate>
       
-      <guid>http://ryanking8215.github.io/2019/my-first-post/</guid>
-      <description>&lt;p&gt;| kk | jj | bb |
-| &amp;ndash; | &amp;ndash; | &amp;ndash; |
-| 1  | 2  | 3 |
-| 11  | 22 | 33 |&lt;/p&gt;
+      <guid>http://ryanking8215.github.io/2019/test_hugo/</guid>
+      <description>&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;kk&lt;/th&gt;
+&lt;th&gt;jj&lt;/th&gt;
+&lt;th&gt;bb&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;11&lt;/td&gt;
+&lt;td&gt;22&lt;/td&gt;
+&lt;td&gt;33&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
 

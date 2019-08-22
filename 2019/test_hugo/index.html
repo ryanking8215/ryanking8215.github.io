@@ -9,9 +9,9 @@
   
   
   
-  <link rel="prev" href="http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/" />
-  <link rel="next" href="http://ryanking8215.github.io/2019/test_hugo/" />
-  <link rel="canonical" href="http://ryanking8215.github.io/2016/python35-cross-compile/" />
+  <link rel="prev" href="http://ryanking8215.github.io/2016/python35-cross-compile/" />
+  
+  <link rel="canonical" href="http://ryanking8215.github.io/2019/test_hugo/" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -22,10 +22,10 @@
   <title>
        
        
-           python3.5 交叉编译 | RyanKing&#39;s Blog
+           Test Hugo | RyanKing&#39;s Blog
        
   </title>
-  <meta name="title" content="python3.5 交叉编译 | RyanKing&#39;s Blog">
+  <meta name="title" content="Test Hugo | RyanKing&#39;s Blog">
     
   
   <link rel="stylesheet" href="/font/iconfont.css">
@@ -44,21 +44,21 @@
          "@id": "http:\/\/ryanking8215.github.io"
     },
     "articleSection" : "posts",
-    "name" : "python3.5 交叉编译",
-    "headline" : "python3.5 交叉编译",
-    "description" : "交叉编译python3.5.1, 用于嵌入式系统。",
+    "name" : "Test Hugo",
+    "headline" : "Test Hugo",
+    "description" : "   kk jj bb     1 2 3   11 22 33    package main import \x26quot;fmt\x26quot; func main() { fmt.Println(\x26quot;hello, world\x26quot;) }  ",
     "inLanguage" : "en-us",
     "author" : "Ryan.King",
     "creator" : "Ryan.King",
     "publisher": "Ryan.King",
     "accountablePerson" : "Ryan.King",
     "copyrightHolder" : "Ryan.King",
-    "copyrightYear" : "2016",
-    "datePublished": "2016-01-17 14:50:54 \x2b0800 CST",
-    "dateModified" : "2016-01-17 14:50:54 \x2b0800 CST",
-    "url" : "http:\/\/ryanking8215.github.io\/2016\/python35-cross-compile\/",
-    "wordCount" : "38",
-    "keywords" : [ "python","cross-compile", "RyanKing\x27s Blog"]
+    "copyrightYear" : "2019",
+    "datePublished": "2019-08-19 18:37:51 \x2b0800 CST",
+    "dateModified" : "2019-08-19 18:37:51 \x2b0800 CST",
+    "url" : "http:\/\/ryanking8215.github.io\/2019\/test_hugo\/",
+    "wordCount" : "19",
+    "keywords" : [  "RyanKing\x27s Blog"]
 }
 </script>
 
@@ -116,18 +116,14 @@
       		
 <article class="post-warp" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">python3.5 交叉编译</h1>
+        <h1 class="post-title" itemprop="name headline">Test Hugo</h1>
         <div class="post-meta">
                 Written by <a itemprop="name" href="http://ryanking8215.github.io" rel="author">Ryan.King</a> with ♥ 
                 <span class="post-time">
-                on <time datetime=2016-01-17 itemprop="datePublished">January 17, 2016</time>
+                on <time datetime=2019-08-19 itemprop="datePublished">August 19, 2019</time>
                 </span>
                 in
-                <i class="iconfont icon-folder"></i>
-                <span class="post-category">
-                        <a href="http://ryanking8215.github.io/categories/tech/"> Tech </a>
-                        
-                </span>
+                
         </div>
     </header>
     <div class="post-content">
@@ -146,45 +142,38 @@
           
           
 
-          
+          <table>
+<thead>
+<tr>
+<th>kk</th>
+<th>jj</th>
+<th>bb</th>
+</tr>
+</thead>
 
-<p>有一个嵌入式项目，尝试将python3.5.1移植到该平台。还未确定是否用python开发, 先把
-环境整好，到时想用就能用了，也记录一下，可以用这种方法移植到其他平台。</p>
+<tbody>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
 
-<h1 id="问题">问题</h1>
+<tr>
+<td>11</td>
+<td>22</td>
+<td>33</td>
+</tr>
+</tbody>
+</table>
 
-<p>Python工程本来就有<code>configure</code>工具，理论上讲交叉编译比较简单，只要指定<code>--host</code>为你
-的交叉编译工具链即可。其他基于<code>autoconf/automake</code>的也是类似的。但是Python比较特殊
-的是，在交叉编译过程中，会生成<code>Parse/Pgen</code>和<code>python</code>应用程序，然后会运行该程序,
-那么问题来了，交叉编译出来的程序在开发机上无法执行的，它们是运行在嵌入式系统上的。</p>
+<pre><code class="language-go">package main
 
-<p>查看网络上的解决方法:</p>
+import &quot;fmt&quot;
 
-<ul>
-<li><p>为Python工程打补丁</p>
-
-<p>打补丁的方法只支持到3.2，新版本就没有了, 大意是先是用本地的编译器编译出python和pgen，改名，然后再是用
-交叉编译工具编译，当然需要加入特殊的命令行参数来指定刚才编译出来的python和pgen。</p></li>
-
-<li><p>压根不处理</p>
-
-<p>不处理的也有，就直接make就ok了，是python3.4+mips的环境，不明白怎么没碰到这个问题。</p></li>
-</ul>
-
-<p>看来要自己解决了。
-尝试忽略执行该程序的过程，修改<code>Makefile</code>, 找到这部分，把它们注释掉，
-继续make，最后ok了。
-可能不是一个好方法，但是一个可行的方法。</p>
-
-<h1 id="参考">参考</h1>
-
-<p>网上找了很多资料做参考，这里记录一下。</p>
-
-<ul>
-<li><a href="http://www.tuicool.com/articles/b6f6Nvf" rel="nofollow noreferrer" target="_blank">交叉编译Python至嵌入式arm(支持import sqlite3,datetime等)&mdash;&ndash;Cross Compiling Python for Emb&hellip;</a></li>
-<li><a href="http://www.tuicool.com/articles/YRFFfa" rel="nofollow noreferrer" target="_blank">交叉编译Python 3.3 压成1.5MB</a></li>
-<li><a href="http://www.tuicool.com/articles/qe6V3y" rel="nofollow noreferrer" target="_blank">为 Kindle 交叉编译 Zsh 和 Python 3.3</a></li>
-</ul>
+func main() {
+    fmt.Println(&quot;hello, world&quot;)
+}
+</code></pre>
 
     </div>
 
@@ -199,7 +188,7 @@
              
             <p class="copyright-item">
                     <span>Link:</span>
-                    <a href=http://ryanking8215.github.io/2016/python35-cross-compile/>http://ryanking8215.github.io/2016/python35-cross-compile/</span>
+                    <a href=http://ryanking8215.github.io/2019/test_hugo/>http://ryanking8215.github.io/2019/test_hugo/</span>
             </p>
             
              
@@ -212,17 +201,6 @@
   
     <div class="post-tags">
         
-            <section>
-            <i class="iconfont icon-tag"></i>Tag(s): 
-            
-            <span class="tag"><a href="http://ryanking8215.github.io/tags/python/">
-                    #python</a></span>
-            
-            <span class="tag"><a href="http://ryanking8215.github.io/tags/cross-compile/">
-                    #cross-compile</a></span>
-            
-            </section>
-        
         <section>
                 <a href="javascript:window.history.back();">back</a></span> · 
                 <span><a href="http://ryanking8215.github.io">home</a></span>
@@ -231,10 +209,8 @@
 
     <div class="post-nav">
         
-        <a href="http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/" class="prev" rel="prev" title="Django下通过form创建model对象如何隐藏不必要的field"><i class="iconfont icon-left"></i>&nbsp;Django下通过form创建model对象如何隐藏不必要的field</a>
+        <a href="http://ryanking8215.github.io/2016/python35-cross-compile/" class="prev" rel="prev" title="python3.5 交叉编译"><i class="iconfont icon-left"></i>&nbsp;python3.5 交叉编译</a>
          
-        
-        <a href="http://ryanking8215.github.io/2019/test_hugo/" class="next" rel="next" title="Test Hugo">Test Hugo&nbsp;<i class="iconfont icon-right"></i></a>
         
     </div>
 
