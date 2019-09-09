@@ -6,10 +6,19 @@
     <description>Recent content in Categories on RyanKing&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 Jan 2016 14:50:54 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 09 Sep 2019 16:48:08 +0800</lastBuildDate>
     
 	<atom:link href="http://ryanking8215.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Misc</title>
+      <link>http://ryanking8215.github.io/categories/misc/</link>
+      <pubDate>Mon, 09 Sep 2019 16:48:08 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/categories/misc/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Tech</title>

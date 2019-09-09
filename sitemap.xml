@@ -2,9 +2,39 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
     <url>
+      <loc>http://ryanking8215.github.io/categories/</loc>
+      
+      <lastmod>2019-09-09T16:48:08+08:00</lastmod>
+      
+      
+      
+      
+    </url>
+  
+    <url>
+      <loc>http://ryanking8215.github.io/categories/misc/</loc>
+      
+      <lastmod>2019-09-09T16:48:08+08:00</lastmod>
+      
+      
+      
+      
+    </url>
+  
+    <url>
+      <loc>http://ryanking8215.github.io/2019/pmp/</loc>
+      
+      <lastmod>2019-09-09T16:48:08+08:00</lastmod>
+      
+      
+      
+      
+    </url>
+  
+    <url>
       <loc>http://ryanking8215.github.io/posts/</loc>
       
-      <lastmod>2019-08-19T18:37:51+08:00</lastmod>
+      <lastmod>2019-09-09T16:48:08+08:00</lastmod>
       
       
       
@@ -14,7 +44,7 @@
     <url>
       <loc>http://ryanking8215.github.io/</loc>
       
-      <lastmod>2019-08-19T18:37:51+08:00</lastmod>
+      <lastmod>2019-09-09T16:48:08+08:00</lastmod>
       
       
       
@@ -25,16 +55,6 @@
       <loc>http://ryanking8215.github.io/2019/test_hugo/</loc>
       
       <lastmod>2019-08-19T18:37:51+08:00</lastmod>
-      
-      
-      
-      
-    </url>
-  
-    <url>
-      <loc>http://ryanking8215.github.io/categories/</loc>
-      
-      <lastmod>2016-01-17T14:50:54+08:00</lastmod>
       
       
       
