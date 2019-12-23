@@ -6,10 +6,19 @@
     <description>Recent content in Tags on RyanKing&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 Jan 2016 14:50:54 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 22 Dec 2019 16:54:09 +0800</lastBuildDate>
     
 	<atom:link href="http://ryanking8215.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>golang</title>
+      <link>http://ryanking8215.github.io/tags/golang/</link>
+      <pubDate>Sun, 22 Dec 2019 16:54:09 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/golang/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>cross-compile</title>
@@ -107,15 +116,6 @@
       <pubDate>Sat, 04 Oct 2014 22:13:35 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/tags/live555/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>golang</title>
-      <link>http://ryanking8215.github.io/tags/golang/</link>
-      <pubDate>Sat, 04 Oct 2014 22:13:33 +0800</pubDate>
-      
-      <guid>http://ryanking8215.github.io/tags/golang/</guid>
       <description></description>
     </item>
     

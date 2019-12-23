@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  <meta name="author" content="Ryan.King">
+  
+  
+  
+  <link rel="prev" href="http://ryanking8215.github.io/2019/pmp/" />
+  <link rel="next" href="http://ryanking8215.github.io/2019/slice_append_print/" />
+  <link rel="canonical" href="http://ryanking8215.github.io/2019/param_bindings_issue_in_echov4/" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           Echo v4 的参数绑定问题 | RyanKing&#39;s Blog
+       
+  </title>
+  <meta name="title" content="Echo v4 的参数绑定问题 | RyanKing&#39;s Blog">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  
+  
+ 
+
+<script type="application/ld+json">
+ "@context" : "http://schema.org",
+    "@type" : "BlogPosting",
+    "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "http:\/\/ryanking8215.github.io"
+    },
+    "articleSection" : "posts",
+    "name" : "Echo v4 的参数绑定问题",
+    "headline" : "Echo v4 的参数绑定问题",
+    "description" : "Echo v4.x 有一个参数绑定问题，造成restful api开发的困扰。",
+    "inLanguage" : "en-us",
+    "author" : "Ryan.King",
+    "creator" : "Ryan.King",
+    "publisher": "Ryan.King",
+    "accountablePerson" : "Ryan.King",
+    "copyrightHolder" : "Ryan.King",
+    "copyrightYear" : "2019",
+    "datePublished": "2019-11-13 14:54:28 \x2b0800 CST",
+    "dateModified" : "2019-11-13 14:54:28 \x2b0800 CST",
+    "url" : "http:\/\/ryanking8215.github.io\/2019\/param_bindings_issue_in_echov4\/",
+    "wordCount" : "226",
+    "keywords" : [ "golang", "RyanKing\x27s Blog"]
+}
+</script>
+
+</head>
+
+  
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="http://ryanking8215.github.io">RyanKing&#39;s Blog</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Echo v4 的参数绑定问题</h1>
+        <div class="post-meta">
+                Written by <a itemprop="name" href="http://ryanking8215.github.io" rel="author">Ryan.King</a> with ♥ 
+                <span class="post-time">
+                on <time datetime=2019-11-13 itemprop="datePublished">November 13, 2019</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="http://ryanking8215.github.io/categories/tech/"> Tech </a>
+                        
+                </span>
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          
+
+<h1 id="现象">现象</h1>
+
+<p><a href="https://echo.labstack.com/" rel="nofollow noreferrer" target="_blank">Echo</a>是golang语言开发的，高性能, 可扩展的微型web框架。</p>
+
+<p>笔者在项目中一直使用Echo框架，一直是v3.x的版本，在项目达到一定阶段后，发现Echo已经发布了&rdquo;v4&rdquo;版本一段时间，于是想把框架升级成v4.</p>
+
+<p>升级之后，发现有些请求出现了问题，具体报错为:</p>
+
+<pre><code class="language-shell">&quot;binding element must be a struct&quot; introduced with path params binding
+</code></pre>
+
+<p>升级后编译一把过，说明API设计的兼容性没有问题，现在是运行时报错了。</p>
+
+<p>整个demo来验证这个问题, 这个demo是典型的restful应用，url里的参数表示资源id，body传入数据:</p>
+
+<pre><code class="language-golang">package main
+
+import (
+    &quot;github.com/labstack/echo/v4&quot;
+    &quot;github.com/labstack/echo/v4/middleware&quot;
+    &quot;github.com/labstack/gommon/log&quot;
+)
+
+func main() {
+    s := echo.New()
+    s.Use(middleware.Logger())
+
+    s.PUT(&quot;/users/:id&quot;, func(c echo.Context) error {
+        var data interface{}
+        if err := c.Bind(&amp;data); err != nil {
+            log.Fatal(err)
+        }
+        log.Print(data)
+        return nil
+    })
+
+    s.Start(&quot;:8811&quot;)
+}
+</code></pre>
+
+<p>请求:</p>
+
+<pre><code class="language-shell">curl -X PUT -H &quot;Content-Type: application/json&quot; -d '{&quot;name&quot;:&quot;John&quot;}' localhost:8811/users/1
+</code></pre>
+
+<p>例子很简单，有一个URL请求是<code>POST /users/1</code>, 传入的body是json <code>{&quot;name&quot;:&quot;John&quot;}</code>.</p>
+
+<p>这个例子造成Echo在调用c.Bind时报错。</p>
+
+<p>我们看下Echo <code>Bind</code>的源码:</p>
+
+<pre><code class="language-golang">// Bind implements the `Binder#Bind` function.
+func (b *DefaultBinder) Bind(i interface{}, c Context) (err error) {
+        req := c.Request()
+
+        names := c.ParamNames()
+        values := c.ParamValues()
+        params := map[string][]string{}
+        for i, name := range names {
+                params[name] = []string{values[i]}
+        }
+        if err := b.bindData(i, params, &quot;param&quot;); err != nil {
+                return NewHTTPError(http.StatusBadRequest, err.Error()).SetInternal(err)
+        }
+        if err = b.bindData(i, c.QueryParams(), &quot;query&quot;); err != nil {
+                return NewHTTPError(http.StatusBadRequest, err.Error()).SetInternal(err)
+        }
+        if req.ContentLength == 0 {
+                return
+        }
+        ctype := req.Header.Get(HeaderContentType)
+        switch {
+        case strings.HasPrefix(ctype, MIMEApplicationJSON):
+                if err = json.NewDecoder(req.Body).Decode(i); err != nil {
+                        if ute, ok := err.(*json.UnmarshalTypeError); ok {
+                                return NewHTTPError(http.StatusBadRequest, fmt.Sprintf(&quot;Unmarshal type error: expected=%v, got=%v, field=%v, offset=%v&quot;, ute.Type, ute.Value, ute.Field, ute.Offset)).SetInternal(err)
+                        } else if se, ok := err.(*json.SyntaxError); ok {
+                                return NewHTTPError(http.StatusBadRequest, fmt.Sprintf(&quot;Syntax error: offset=%v, error=%v&quot;, se.Offset, se.Error())).SetInternal(err)
+                        }
+                        return NewHTTPError(http.StatusBadRequest, err.Error()).SetInternal(err)
+                }    
+         ....                     
+</code></pre>
+
+<p>可以看到，它先<code>bindData params</code>, 而这个<code>param</code>，即传入的&rdquo;id&rdquo;. 即Echo先尝试绑定param，在&rdquo;ContentLength&gt;0&rdquo;时再绑定body。</p>
+
+<p>和我们预想的使用<code>c.Bind()</code>来获取<code>body</code>数据不符。而查看&rdquo;v3&rdquo;版本的，是没有这个问题的。</p>
+
+<h1 id="解决方法">解决方法</h1>
+
+<p>可以通过不同方法绕过c.Bind调用。</p>
+
+<ol>
+<li>使用json.NewDecoder()或者json.Unmarshal()替换c.Bind</li>
+<li>echo支持自定义Binder对象，<code>echo.Binder = MyBinder()</code></li>
+</ol>
+
+<h1 id="后记">后记</h1>
+
+<p>笔者把该问题反馈给了上游, 发现有人已经提过<a href="https://github.com/labstack/echo/issues/1356" rel="nofollow noreferrer" target="_blank">issue</a>, 我再补充一下。</p>
+
+<p>作者之一貌似准备重新release一个版本。</p>
+
+<p>我提出来是否可以用一个选项来开关该功能(param binding).</p>
+
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Ryan.King </span>
+                </p>
+            
+           
+             
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href=http://ryanking8215.github.io/2019/param_bindings_issue_in_echov4/>http://ryanking8215.github.io/2019/param_bindings_issue_in_echov4/</span>
+            </p>
+            
+             
+            <p class="copyright-item lincese">
+                本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可
+            </p>
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-tag"></i>Tag(s): 
+            
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/golang/">
+                    #golang</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">back</a></span> · 
+                <span><a href="http://ryanking8215.github.io">home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        <a href="http://ryanking8215.github.io/2019/pmp/" class="prev" rel="prev" title="PMP相关"><i class="iconfont icon-left"></i>&nbsp;PMP相关</a>
+         
+        
+        <a href="http://ryanking8215.github.io/2019/slice_append_print/" class="next" rel="next" title="go slice append后的输出问题">go slice append后的输出问题&nbsp;<i class="iconfont icon-right"></i></a>
+        
+    </div>
+
+    <div class="post-comment">
+          
+                 
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2012 - 2019</span>
+        
+        <span class="with-love">
+    	 <i class="iconfont icon-love"></i> 
+         </span>
+         
+            <span class="author" itemprop="copyrightHolder"><a href="http://ryanking8215.github.io">Ryan.King</a> | </span> 
+         
+
+         
+		  <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    <script src="/js/vendor_no_gallery.min.js" async=""></script>
+    
+  
+
+
+
+     </div>
+  </body>
+</html>

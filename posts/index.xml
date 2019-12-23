@@ -6,10 +6,28 @@
     <description>Recent content in Posts on RyanKing&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Sep 2019 16:48:08 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 22 Dec 2019 16:54:09 +0800</lastBuildDate>
     
 	<atom:link href="http://ryanking8215.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>go slice append后的输出问题</title>
+      <link>http://ryanking8215.github.io/2019/slice_append_print/</link>
+      <pubDate>Sun, 22 Dec 2019 16:54:09 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2019/slice_append_print/</guid>
+      <description>一个go小程序，关于slice append后的输出问题。</description>
+    </item>
+    
+    <item>
+      <title>Echo v4 的参数绑定问题</title>
+      <link>http://ryanking8215.github.io/2019/param_bindings_issue_in_echov4/</link>
+      <pubDate>Wed, 13 Nov 2019 14:54:28 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2019/param_bindings_issue_in_echov4/</guid>
+      <description>Echo v4.x 有一个参数绑定问题，造成restful api开发的困扰。</description>
+    </item>
     
     <item>
       <title>PMP相关</title>
