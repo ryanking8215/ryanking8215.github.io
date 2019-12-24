@@ -17,7 +17,9 @@
       <pubDate>Wed, 04 Jun 2014 22:20:00 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2014/dont-strip-ko/</guid>
-      <description>闹乌龙啦&amp;hellip;</description>
+      <description>今天给嵌入式linux系统做升级包，发现升级包有点大，于是把lib下和bin下的 文件都strip了一下，手痒了，把lib/modules/下的ko也strip了一下。
+还好测试了一下升级包，设备重启后无法加载内核模块，这才发觉，我把ko的symbols都 strip了，内核当然无法加载ko了。
+切记，切记！</description>
     </item>
     
     <item>
@@ -26,7 +28,8 @@
       <pubDate>Wed, 05 Jun 2013 17:20:00 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2013/pjsip/</guid>
-      <description>pjsip使用过程中总结的问题，不定时更新&amp;hellip;</description>
+      <description>多线程 多线程调用pjlib的api需要注册进pjlib的线程才能执行。使用pj_thread_register()即可。 但是在某些环境下，仍旧会crash，查看堆栈信息是assert(mutex-&amp;gt;owner()!=pj_thread_this())这里。 查看源码，发现该段代码是包含在PJ_DEBUG的宏内，我们需要PJ_DEBUG的宏注释掉就好了，或者#define PJ_DEBUG 0.
+具体编译方法可以参见pjlib/include/pj/config_site_sample.h里MAX_SPEED的配置。</description>
     </item>
     
   </channel>

@@ -46,7 +46,7 @@
     "articleSection" : "posts",
     "name" : "如何使用nodejs撸一个tcp client",
     "headline" : "如何使用nodejs撸一个tcp client",
-    "description" : "\x3cp\x3e单看话题有点low,用nodejs撸一个tcp client不是秒秒钟的事情\n封装一个client，sock收到data后解析出msg，通过event通知调用端msg来了：\x3c\/p\x3e\n\n\x3cpre\x3e\x3ccode class=\x22language-javascript\x22\x3evar sock = net.createConnection(...);\nsock.on(\x27error\x27,function(){\n\t\n})\nsock.on(\x27data\x27,function(buf){\n\tvar msg = parse_data(buf)\n\tself.emit(\x27msg\x27,msg)\n})\n\x3c\/code\x3e\x3c\/pre\x3e\n\n\x3cp\x3e大意如此，不要在意细节。如果真是这样的话，那就没有必要撸这个博文了。\x3c\/p\x3e\n\n\x3cp\x3e首先要看封装的api到什么程度，client.sendRequest()之后如果什么都不干，光等msg过来，对于\n调用你client库的主来说真的是苦主了，一般client都有业务逻辑在，例如先connect(),再login(),\n然后再干嘛干嘛；也需要判断response，你都放在\x3ccode\x3eclient.on(\x27msg\x27,function(){...})\x3c\/code\x3e里，让别人情何以堪。\x3c\/p\x3e\n\n\x3cp\x3e那应该怎么做呢？\x3c\/p\x3e",
+    "description" : "用nodejs实现一个可实用的tcp client,不只是回调那么简单。",
     "inLanguage" : "en-us",
     "author" : "Ryan.King",
     "creator" : "Ryan.King",

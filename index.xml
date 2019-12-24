@@ -197,7 +197,7 @@ var s []byte
     </item>
     
     <item>
-      <title>Echo v4 的参数绑定问题</title>
+      <title>Echo.v4的参数绑定问题</title>
       <link>http://ryanking8215.github.io/2019/param_bindings_issue_in_echov4/</link>
       <pubDate>Wed, 13 Nov 2019 14:54:28 +0800</pubDate>
       
@@ -208,7 +208,8 @@ var s []byte
 
 &lt;p&gt;&lt;a href=&#34;https://echo.labstack.com/&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;Echo&lt;/a&gt;是golang语言开发的，高性能, 可扩展的微型web框架。&lt;/p&gt;
 
-&lt;p&gt;笔者在项目中一直使用Echo框架，一直是v3.x的版本，在项目达到一定阶段后，发现Echo已经发布了&amp;rdquo;v4&amp;rdquo;版本一段时间，于是想把框架升级成v4.&lt;/p&gt;
+&lt;p&gt;笔者在项目中一直使用Echo框架，一直是v3.x的版本，在项目达到一定阶段后，发现Echo已经发布了&amp;rdquo;v4&amp;rdquo;版本一段时间，于是想把框架升级成v4.
+到目前为止，最新的版本是&lt;code&gt;v4.11&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;升级之后，发现有些请求出现了问题，具体报错为:&lt;/p&gt;
 

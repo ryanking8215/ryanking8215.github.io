@@ -46,7 +46,7 @@
     "articleSection" : "posts",
     "name" : "golang and xml",
     "headline" : "golang and xml",
-    "description" : "\x3cp\x3egolang使用encoding\/xml的\x3cstrong\x3eMarshal\x3c\/strong\x3e和\x3cstrong\x3eUnmarshal\x3c\/strong\x3e来处理xml。这个很简单，而且官网上都有例子。\n官网上的例子都是解析某个文件，文件的内容都是确定的；或者通过某个确定的struct来生成xml，struct的定义也是确定的。\x3c\/p\x3e\n\n\x3cp\x3e但是在处理网络协议的时候，协议是变化的，例如协议有协议头，有msg_type表示是request还是response,每个request和response\n根据不同的command，带有不同的content：比如command=\x26ldquo;do_a\x26rdquo;或\x26rdquo;do_b\x26rdquo;,带的content不一样，就算一样的command，request的content和\nresponse的content也不一样，那收到协议以后如何解析呢？连内容都确定不了，没有办法定义一个确定的struct去Unmarshal\x3c\/p\x3e",
+    "description" : "golang使用xml的方法，比如有些协议里根据command不同，content也不同，如何处理呢？",
     "inLanguage" : "en-us",
     "author" : "Ryan.King",
     "creator" : "Ryan.King",

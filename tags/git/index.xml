@@ -17,7 +17,17 @@
       <pubDate>Sun, 05 Oct 2014 17:00:20 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2014/git-remote/</guid>
-      <description>简单操作，简单记录</description>
+      <description>看了git的手册，关于remote的操作。稍微精简了一下，以供记录和记忆。
+ 查看远程仓库 git remote [-v]
+ 添加远程仓库 git remote add [remote-name] [url]
+ 改名远程仓库 git remote rename [old-name] [new-name]
+ 删除远程仓库 git remote rm [remote-name]
+ 抓取远程仓库的数据 git fetch [remote-name]
+ 推送数据到远程分支 git push [remote-name] [branch-name] git push [remote-name] [local-branch-name]:[remote-branch-name]
+ 删除远程仓库分支 git push [remote-name] :[remote-branch-name]
+ 使用本地分支跟踪远程分支 git checkout &amp;ndash;track [remote-name]/[remote-branch-name] git checout -b [local-branch-name] [remote-name]/[remote-branch-name]
+ 如果本地分支为跟踪分支： 在此分支下 git pull（fetch and merge）, git push可以自动识别远程信息，不需要填写remote-name/branch-name了。包括git clone来分支的。
+ 合并本地分支和远程分支 git merge [remote-name]/[remote-branch-name]</description>
     </item>
     
   </channel>

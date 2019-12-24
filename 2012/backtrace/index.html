@@ -46,7 +46,7 @@
     "articleSection" : "posts",
     "name" : "使用backtrace跟踪栈信息",
     "headline" : "使用backtrace跟踪栈信息",
-    "description" : "一种在嵌入式上可行的调试方法，截获SIGSEGV信号，并作backtrace()处理，把 调用栈信息打印出来。\n#include \x26lt;signal.h\x26gt; #include \x26lt;execinfo.h\x26gt; int main(void) { signal(SIGSEGV,DebugBacktrace); } static void DebugBacktrace(int signal) { #define SIZE 100 void *array[SIZE]; int size,i; char **strings; char buf[50]; fprintf(stderr,\x26quot;\\nSegmentation fault \\n\x26quot;); size = backtrace(array,SIZE); fprintf(stderr,\x26quot;Backtrace (%d deep):\\n\x26quot;,size); strings = backtrace_symbols(array,size); for(i = 0;i\x26lt;size;i\x2b\x2b) { fprintf(stderr,\x26quot;%d: %s \\n\x26quot;,i,strings[i]); } free(strings); exit(-1); return ; } #=\x26gt; 会将调用栈根据需要显示出来  比起core来，不需要占用很大的空间，但是貌似只能回溯调用栈，无法回溯当时的内存。",
+    "description" : "使用backtrace跟踪堆栈信息",
     "inLanguage" : "en-us",
     "author" : "Ryan.King",
     "creator" : "Ryan.King",

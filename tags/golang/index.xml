@@ -17,16 +17,30 @@
       <pubDate>Sun, 22 Dec 2019 16:54:09 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2019/slice_append_print/</guid>
-      <description>一个go小程序，关于slice append后的输出问题。</description>
+      <description>引子 近日在网上看到有个go代码，比较有意思，说在第14行注释前和注释后，最后的打印结果是不同的：
+package main import ( &amp;quot;fmt&amp;quot; ) func main(){ s := []byte(&amp;quot;&amp;quot;) s1 := append(s, &#39;a&#39;) s2 := append(s, &#39;b&#39;) // 如果释放此行，打印的结果是 a b，否则打印的结果是b b //fmt.Println(s1, &amp;quot;===&amp;quot;, s2) fmt.Println(string(s1), string(s2)) }  验证一下 我用go编译跑了一下，无论是否注释，都是输出&amp;rdquo;a b&amp;rdquo;, 而不是文中提到的&amp;rdquo;b b&amp;rdquo;.
+那么是咋回事呢？我看了下我的go版本是:
+go version go1.12.7 linux/amd64  而文中是go1.9. 幸好我还有go1.10的版本：
+go version go1.10.4 linux/amd64  看下它的表现，果然结果是不同的，那就可以用go1.10和go1.12做个比较，看下是哪里的不同。
+按照文中所述，输出&amp;rdquo;a b&amp;rdquo;和&amp;rdquo;b b&amp;rdquo;原因是在栈上分配和堆上分配和策略不同所致。 如果14行被注释，那么s将被分配在栈上，而由于是[]byte(&amp;quot;&amp;quot;),是将空字符串转成byte slice，在内部执行的是runtime.stringtoslicebyte, 默认分配了32B size的cap；而释放那行，s将逃逸至堆，从堆上分配时，slice的cap为0。由于初始cap不同，造成了结果不同。 至于slice和append的实现，文中说的很明白，这里不赘述了。
+咋回事 我们先来看下旧版的go，为啥注释前后输出不同呢？
+为了更好地说明，我们为其加些调试打印，一窥究竟：
+package main import ( &amp;quot;fmt&amp;quot; ) func main(){ s := []byte(&amp;quot;&amp;quot;) println(s) // 调试 s1 := append(s, &#39;a&#39;) println(s1) // 调试 s2 := append(s, &#39;b&#39;) println(s2) // 调试 // 如果释放此行，打印的结果是 a b，否则打印的结果是b b //fmt.</description>
     </item>
     
     <item>
-      <title>Echo v4 的参数绑定问题</title>
+      <title>Echo.v4的参数绑定问题</title>
       <link>http://ryanking8215.github.io/2019/param_bindings_issue_in_echov4/</link>
       <pubDate>Wed, 13 Nov 2019 14:54:28 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2019/param_bindings_issue_in_echov4/</guid>
-      <description>Echo v4.x 有一个参数绑定问题，造成restful api开发的困扰。</description>
+      <description>现象 Echo是golang语言开发的，高性能, 可扩展的微型web框架。
+笔者在项目中一直使用Echo框架，一直是v3.x的版本，在项目达到一定阶段后，发现Echo已经发布了&amp;rdquo;v4&amp;rdquo;版本一段时间，于是想把框架升级成v4. 到目前为止，最新的版本是v4.11
+升级之后，发现有些请求出现了问题，具体报错为:
+&amp;quot;binding element must be a struct&amp;quot; introduced with path params binding  升级后编译一把过，说明API设计的兼容性没有问题，现在是运行时报错了。
+整个demo来验证这个问题, 这个demo是典型的restful应用，url里的参数表示资源id，body传入数据:
+package main import ( &amp;quot;github.com/labstack/echo/v4&amp;quot; &amp;quot;github.com/labstack/echo/v4/middleware&amp;quot; &amp;quot;github.com/labstack/gommon/log&amp;quot; ) func main() { s := echo.New() s.Use(middleware.Logger()) s.PUT(&amp;quot;/users/:id&amp;quot;, func(c echo.Context) error { var data interface{} if err := c.Bind(&amp;amp;data); err != nil { log.Fatal(err) } log.Print(data) return nil }) s.Start(&amp;quot;:8811&amp;quot;) }  请求:
+curl -X PUT -H &amp;quot;Content-Type: application/json&amp;quot; -d &#39;{&amp;quot;name&amp;quot;:&amp;quot;John&amp;quot;}&#39; localhost:8811/users/1  例子很简单，有一个URL请求是POST /users/1, 传入的body是json {&amp;quot;name&amp;quot;:&amp;quot;John&amp;quot;}.</description>
     </item>
     
     <item>

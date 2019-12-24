@@ -22,10 +22,10 @@
   <title>
        
        
-           Echo v4 的参数绑定问题 | RyanKing&#39;s Blog
+           Echo.v4的参数绑定问题 | RyanKing&#39;s Blog
        
   </title>
-  <meta name="title" content="Echo v4 的参数绑定问题 | RyanKing&#39;s Blog">
+  <meta name="title" content="Echo.v4的参数绑定问题 | RyanKing&#39;s Blog">
     
   
   <link rel="stylesheet" href="/font/iconfont.css">
@@ -44,9 +44,9 @@
          "@id": "http:\/\/ryanking8215.github.io"
     },
     "articleSection" : "posts",
-    "name" : "Echo v4 的参数绑定问题",
-    "headline" : "Echo v4 的参数绑定问题",
-    "description" : "Echo v4.x 有一个参数绑定问题，造成restful api开发的困扰。",
+    "name" : "Echo.v4的参数绑定问题",
+    "headline" : "Echo.v4的参数绑定问题",
+    "description" : "现象 Echo是golang语言开发的，高性能, 可扩展的微型web框架。\n笔者在项目中一直使用Echo框架，一直是v3.x的版本，在项目达到一定阶段后，发现Echo已经发布了\x26rdquo;v4\x26rdquo;版本一段时间，于是想把框架升级成v4. 到目前为止，最新的版本是v4.11\n升级之后，发现有些请求出现了问题，具体报错为:\n\x26quot;binding element must be a struct\x26quot; introduced with path params binding  升级后编译一把过，说明API设计的兼容性没有问题，现在是运行时报错了。\n整个demo来验证这个问题, 这个demo是典型的restful应用，url里的参数表示资源id，body传入数据:\npackage main import ( \x26quot;github.com\/labstack\/echo\/v4\x26quot; \x26quot;github.com\/labstack\/echo\/v4\/middleware\x26quot; \x26quot;github.com\/labstack\/gommon\/log\x26quot; ) func main() { s := echo.New() s.Use(middleware.Logger()) s.PUT(\x26quot;\/users\/:id\x26quot;, func(c echo.Context) error { var data interface{} if err := c.Bind(\x26amp;data); err != nil { log.Fatal(err) } log.Print(data) return nil }) s.Start(\x26quot;:8811\x26quot;) }  请求:\ncurl -X PUT -H \x26quot;Content-Type: application\/json\x26quot; -d \x27{\x26quot;name\x26quot;:\x26quot;John\x26quot;}\x27 localhost:8811\/users\/1  例子很简单，有一个URL请求是POST \/users\/1, 传入的body是json {\x26quot;name\x26quot;:\x26quot;John\x26quot;}.",
     "inLanguage" : "en-us",
     "author" : "Ryan.King",
     "creator" : "Ryan.King",
@@ -57,7 +57,7 @@
     "datePublished": "2019-11-13 14:54:28 \x2b0800 CST",
     "dateModified" : "2019-11-13 14:54:28 \x2b0800 CST",
     "url" : "http:\/\/ryanking8215.github.io\/2019\/param_bindings_issue_in_echov4\/",
-    "wordCount" : "226",
+    "wordCount" : "227",
     "keywords" : [ "golang", "RyanKing\x27s Blog"]
 }
 </script>
@@ -118,7 +118,7 @@
       		
 <article class="post-warp" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Echo v4 的参数绑定问题</h1>
+        <h1 class="post-title" itemprop="name headline">Echo.v4的参数绑定问题</h1>
         <div class="post-meta">
                 Written by <a itemprop="name" href="http://ryanking8215.github.io" rel="author">Ryan.King</a> with ♥ 
                 <span class="post-time">
@@ -154,7 +154,8 @@
 
 <p><a href="https://echo.labstack.com/" rel="nofollow noreferrer" target="_blank">Echo</a>是golang语言开发的，高性能, 可扩展的微型web框架。</p>
 
-<p>笔者在项目中一直使用Echo框架，一直是v3.x的版本，在项目达到一定阶段后，发现Echo已经发布了&rdquo;v4&rdquo;版本一段时间，于是想把框架升级成v4.</p>
+<p>笔者在项目中一直使用Echo框架，一直是v3.x的版本，在项目达到一定阶段后，发现Echo已经发布了&rdquo;v4&rdquo;版本一段时间，于是想把框架升级成v4.
+到目前为止，最新的版本是<code>v4.11</code></p>
 
 <p>升级之后，发现有些请求出现了问题，具体报错为:</p>
 

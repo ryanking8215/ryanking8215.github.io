@@ -17,16 +17,30 @@
       <pubDate>Sun, 22 Dec 2019 16:54:09 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2019/slice_append_print/</guid>
-      <description>一个go小程序，关于slice append后的输出问题。</description>
+      <description>引子 近日在网上看到有个go代码，比较有意思，说在第14行注释前和注释后，最后的打印结果是不同的：
+package main import ( &amp;quot;fmt&amp;quot; ) func main(){ s := []byte(&amp;quot;&amp;quot;) s1 := append(s, &#39;a&#39;) s2 := append(s, &#39;b&#39;) // 如果释放此行，打印的结果是 a b，否则打印的结果是b b //fmt.Println(s1, &amp;quot;===&amp;quot;, s2) fmt.Println(string(s1), string(s2)) }  验证一下 我用go编译跑了一下，无论是否注释，都是输出&amp;rdquo;a b&amp;rdquo;, 而不是文中提到的&amp;rdquo;b b&amp;rdquo;.
+那么是咋回事呢？我看了下我的go版本是:
+go version go1.12.7 linux/amd64  而文中是go1.9. 幸好我还有go1.10的版本：
+go version go1.10.4 linux/amd64  看下它的表现，果然结果是不同的，那就可以用go1.10和go1.12做个比较，看下是哪里的不同。
+按照文中所述，输出&amp;rdquo;a b&amp;rdquo;和&amp;rdquo;b b&amp;rdquo;原因是在栈上分配和堆上分配和策略不同所致。 如果14行被注释，那么s将被分配在栈上，而由于是[]byte(&amp;quot;&amp;quot;),是将空字符串转成byte slice，在内部执行的是runtime.stringtoslicebyte, 默认分配了32B size的cap；而释放那行，s将逃逸至堆，从堆上分配时，slice的cap为0。由于初始cap不同，造成了结果不同。 至于slice和append的实现，文中说的很明白，这里不赘述了。
+咋回事 我们先来看下旧版的go，为啥注释前后输出不同呢？
+为了更好地说明，我们为其加些调试打印，一窥究竟：
+package main import ( &amp;quot;fmt&amp;quot; ) func main(){ s := []byte(&amp;quot;&amp;quot;) println(s) // 调试 s1 := append(s, &#39;a&#39;) println(s1) // 调试 s2 := append(s, &#39;b&#39;) println(s2) // 调试 // 如果释放此行，打印的结果是 a b，否则打印的结果是b b //fmt.</description>
     </item>
     
     <item>
-      <title>Echo v4 的参数绑定问题</title>
+      <title>Echo.v4的参数绑定问题</title>
       <link>http://ryanking8215.github.io/2019/param_bindings_issue_in_echov4/</link>
       <pubDate>Wed, 13 Nov 2019 14:54:28 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2019/param_bindings_issue_in_echov4/</guid>
-      <description>Echo v4.x 有一个参数绑定问题，造成restful api开发的困扰。</description>
+      <description>现象 Echo是golang语言开发的，高性能, 可扩展的微型web框架。
+笔者在项目中一直使用Echo框架，一直是v3.x的版本，在项目达到一定阶段后，发现Echo已经发布了&amp;rdquo;v4&amp;rdquo;版本一段时间，于是想把框架升级成v4. 到目前为止，最新的版本是v4.11
+升级之后，发现有些请求出现了问题，具体报错为:
+&amp;quot;binding element must be a struct&amp;quot; introduced with path params binding  升级后编译一把过，说明API设计的兼容性没有问题，现在是运行时报错了。
+整个demo来验证这个问题, 这个demo是典型的restful应用，url里的参数表示资源id，body传入数据:
+package main import ( &amp;quot;github.com/labstack/echo/v4&amp;quot; &amp;quot;github.com/labstack/echo/v4/middleware&amp;quot; &amp;quot;github.com/labstack/gommon/log&amp;quot; ) func main() { s := echo.New() s.Use(middleware.Logger()) s.PUT(&amp;quot;/users/:id&amp;quot;, func(c echo.Context) error { var data interface{} if err := c.Bind(&amp;amp;data); err != nil { log.Fatal(err) } log.Print(data) return nil }) s.Start(&amp;quot;:8811&amp;quot;) }  请求:
+curl -X PUT -H &amp;quot;Content-Type: application/json&amp;quot; -d &#39;{&amp;quot;name&amp;quot;:&amp;quot;John&amp;quot;}&#39; localhost:8811/users/1  例子很简单，有一个URL请求是POST /users/1, 传入的body是json {&amp;quot;name&amp;quot;:&amp;quot;John&amp;quot;}.</description>
     </item>
     
     <item>
@@ -35,7 +49,16 @@
       <pubDate>Sun, 17 Jan 2016 14:50:54 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2016/python35-cross-compile/</guid>
-      <description>交叉编译python3.5.1, 用于嵌入式系统。</description>
+      <description> 有一个嵌入式项目，尝试将python3.5.1移植到该平台。还未确定是否用python开发, 先把 环境整好，到时想用就能用了，也记录一下，可以用这种方法移植到其他平台。
+问题 Python工程本来就有configure工具，理论上讲交叉编译比较简单，只要指定--host为你 的交叉编译工具链即可。其他基于autoconf/automake的也是类似的。但是Python比较特殊 的是，在交叉编译过程中，会生成Parse/Pgen和python应用程序，然后会运行该程序, 那么问题来了，交叉编译出来的程序在开发机上无法执行的，它们是运行在嵌入式系统上的。
+查看网络上的解决方法:
+ 为Python工程打补丁
+打补丁的方法只支持到3.2，新版本就没有了, 大意是先是用本地的编译器编译出python和pgen，改名，然后再是用 交叉编译工具编译，当然需要加入特殊的命令行参数来指定刚才编译出来的python和pgen。
+ 压根不处理
+不处理的也有，就直接make就ok了，是python3.4+mips的环境，不明白怎么没碰到这个问题。
+  看来要自己解决了。 尝试忽略执行该程序的过程，修改Makefile, 找到这部分，把它们注释掉， 继续make，最后ok了。 可能不是一个好方法，但是一个可行的方法。
+参考 网上找了很多资料做参考，这里记录一下。
+ 交叉编译Python至嵌入式arm(支持import sqlite3,datetime等)&amp;mdash;&amp;ndash;Cross Compiling Python for Emb&amp;hellip; 交叉编译Python 3.3 压成1.5MB 为 Kindle 交叉编译 Zsh 和 Python 3.3  </description>
     </item>
     
     <item>
@@ -44,7 +67,13 @@
       <pubDate>Sun, 25 Oct 2015 10:00:00 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/</guid>
-      <description>由一个一对多关系由form创建model对象想到的。 提供了2种方法。</description>
+      <description>简述 例如Model A和Model S是一对多的关系，即A是one， S是many, 使用ForeignKey来定义
+class A(models.Model): name = models.CharFields(max_length=64) class S(models.Model): name = models.CharFields(max_length=64) a = models.ForeignKey(A)  在某个页面创建S的时候，需要指定是哪个A。 如果为A和S注册了admin，那么在admin-site里创建S的时候，会看到需要选择哪个A的实例，它会把所有的A的记录都列出来
+但这个是针对admin的，不是针对业务的，如果一个用户想为他名下的某个A资源建立一个S的资源，那么把所有A的记录都列出来是不合适的，也不安全；实际上例如POST /A/1/S/create这样的url已经含了A的主键，在创建S的时候只需要为a field赋值即可，而且是自动的，不需要用户选择。
+策略 就是在创建S的时候，不能把a的field暴露出来，并且根据url里的A的主键，将a赋值为A.objects.get(pk=1)即可。
+方法1 直接使用CreateView，model为S，form暴露的fields需要包括a，在获取form初始值时，将a赋值。form在render的时候，需要隐藏a field，需要自定义各form的field，不能使用form.as_p()等。
+class SCreateView(CreateView): model = S fields = {&#39;name&#39;,&#39;a&#39;} success_url = &#39;myurl&#39; template_name = &#39;s_add.html&#39; def get(self, request, *args, **kwargs): # 这里根据url参数获取A的对象 self.a_object = A.objects.get(pk=kwargs[&#39;a_id&#39;]) def get_initial(self): # 这里这样默认的form里a field就有值了。 return {&#39;a&#39;:self.a_object.pk}  方法2 使用SignalObjectMixin和FormView的组合，SignalObjectMixin是为了获取A的对象，FormView用于处理form的get和post。特别是post，我们的Form不需要有a field，在form_valid()里，通过form.save(commit=False)来创建一个S对象，但是该对象还没有持久化，然后为该对象的a field赋值为self.object.pk(通过SignalObjectMixin)即可，然后调用s.save()即可。
+class SForm(form.ModelForm): class Meta: model = S fields = {&#39;name&#39;} class SCreateView(SingleObjectMixin, FormView): model = A form_class = SForm def get(self, request, *args, **kwargs): self.</description>
     </item>
     
     <item>
@@ -53,7 +82,16 @@
       <pubDate>Sun, 20 Sep 2015 14:50:54 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2015/python-ctypes/</guid>
-      <description>使用ctypes封装libpcap时的一些心得</description>
+      <description> 项目中需要用到python来抓网络包进行分析，看了pip有现成的pcap库，但是没用过，我使用的pcap的接口很简单，所以就想自己封装一个。
+函数接口通过指针传递数据，如何在python中hold住内存 有接口 pcap_next_ext(pcap_t *, pcap_pkthdr *, u_char **)
+最后的参数即返回函数内部的内存指针，即该指针指向内部内存，该部分数据即收到的包，在处理协议时，需要对该数据包进行分析:
+u_char * data; pcap_next_ext(pcap,&amp;amp;head,&amp;amp;data); eth_frame_t *eth = (eth_frame_t *)data; rest_data_t * mine = (rest_data_t *)(data+sizeof(*eth))  以上是c的调用实例，现在要用python来实现。
+函数声明:
+api.pcap_next_ext.argtypes = (ctypes.c_void_p,pcap_pkther_p, POINTER(POINTER(c_ubyte)))  这里用POINTER(POINTER(c_ubyte))来表示u_char **的类型，为什么不用 POINTER(c_char_p)呢，因为c_char_p是以NULL为结束的，所以分析二进制数据的时候，这个是不合适的，因为数据有可能为0,即’\0’,会被截断的。 调用：
+data = POINTER(c_ubyte)() # u_char *data; api.pcap_next_ext(pcap,ctypes.byref(head),ctypes.byref(data))  这样，data就能hold住c function通过指针返回的数据了。 ctypes.byref(data)即 &amp;amp;data.
+那如何使用data所指向的数据呢? 在python层，它认为是一个pointer, data有contents属性，值是第1个数据，即data[0],当然，我们可以通过data[i]访问索引为i的字节，和c指针一样，但如何强制转换呢？ eth_frame = ctypes.cast(data,eth_frame_p) 那之后的mine指针怎么赋值呢？
+mine = ctypes.cast(data+eth_frame.size(),rest_data_p)  这样是不行的，我们需要得到data的地址，通过ctypes.addressof(data.contents) 这才是data指针的基地址，我们可以通过它来访问后续的内存
+mine = ctypes.cast(ctypes.addressof(data.contents)+eth_frame.size(),rest_data_p)  </description>
     </item>
     
     <item>
@@ -62,7 +100,15 @@
       <pubDate>Sun, 12 Apr 2015 16:50:54 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2015/py-decorate/</guid>
-      <description>在一个web项目中使用python装饰器的经验</description>
+      <description>简述 这是一个目前在做的flask web项目的一点记录，基本思路是以python的装饰器为request handler加入资源描述，用户认证和鉴权的功能，这样，不用在每个request handler里都把这些代码调用一遍，以装饰器的模式，更加简便和美观，便于调试
+下面描述几个概念
+资源 这里的资源即人为设定的数据结构，用来描述该request handler会对系统的哪个资源进行什么样的操作。以restful api为例，你需要定义系统中有哪些 资源，该handler是做什么操作(CRUD)。以博客为例：
+class Resource(enum.IntEnum): BLOG = 1 COMMENT = 2 class Operation(enum.IntEnum): C = 1&amp;lt;&amp;lt;0 R = 1&amp;lt;&amp;lt;1 U = 1&amp;lt;&amp;lt;2 D = 1&amp;lt;&amp;lt;3  用户登录之后，得到资源数据，即BLOG资源可以有哪些操作，COMMENT资源有哪些操作，然后和handler的资源描述一比较，就能得到权限结果。
+认证和鉴权 好多人认为这是一个东西，有些web框架也会认为是一个，但是依本人愚见不是，认证是用户以用户凭证是否能登录进你的系统，而鉴权是用户认证完后得到的权限能做什么操作。 2者有先后的逻辑关系。认证的方法有好多种，目前的系统是通过Digest来认证，简单方便。
+详细说说鉴权，用户登录完后，从系统中取出该用户的权限操作，我这里以dict[Resource] = operation_mask来保存，即权限是一个dict，记录每个资源的操作值。当访问restful api时， 和handler的资源描述比对，其实就是检查dict内是否有对应的资源，通过位操作判断是否有对应的操作权限。简单方便。
+装饰器 有追求的python码农都会考虑通过装饰器来简化函数调用。如果不使用装饰器，代码应该是这样的：
+def get_blog(): set_resource(BLOG,R) if not digest_authentication(): abort(401) if not authorization(): abort(403) # 继续处理  如果用装饰器，那么应该是这样的
+@set_resource(BLOG,R) @digest_authentication @authorization def get_blog(): # 继续处理 pass  有追求的python码农不会满足于此，每个函数上有3个@,其实本人的项目都是json输出，最后还有@jsonify的装饰器，总共有4个，太多太杂，而且有先后顺序，容易错。 整成一个多好？</description>
     </item>
     
     <item>
@@ -71,7 +117,21 @@
       <pubDate>Mon, 06 Apr 2015 16:13:40 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2015/pyramid-and-flask/</guid>
-      <description>还没到&amp;rdquo;vs.&amp;ldquo;的境界，只好用&amp;rdquo;and&amp;rdquo;了, -)</description>
+      <description>有个企业内部项目，restful api，mysql, digest authentication. python很早就用了，写一些维护的脚本和验证一些算法，简单明了，不用考虑c/c++的内存管理。 但是web开发还是第一次，事先了解了一些python下的web framework
+ web.py bottle flask pyramid django  因为ORM使用sqlalchemy，所以先踢掉了django；web.py因为python3和创始人的原因，不再考虑；bottle太过简单，学习可以，用在工程上可能欠妥，也排除；留下了flask和pyramid，flask名气更响，资源更多，但是在简单了解了pyramid后，使用pyramid来开展项目，当然之后由于某些原因又换到了flask，所以把这2个框架的使用和区别做一些记录，以供参考，当然，由于初次接触web框架，难免会有疏漏和错误，望海涵。
+路由 pyramid把url设置为一个唯一string,然后将hanlder绑定在该string上。几乎所有的配置均可通过装饰器解决，除了url本身，你可以指定method,query strings来绑定具体的handler，不用进一个进口，然后根据query stirng或者method来区分。
+flask使用装饰器直接将url绑定在handler上，无论是使用app还是blueprint。支持继承view的方式来设定handler，我用的最多的就是MethodView。
+模板 pyramid默认模板是mako；flask默认模板是jinjia2。按照jinjia2的说法，两者性能差不多，好像周遭用jinjia2的更多一点。两者均支持更换第三方模板。
+pyramid支持将模板render功能写在装饰器里，而flask需要显式调用render_template(),我的项目返回json数据，pyramid支持内置的render=&#39;json&#39;,而flask需要显式调用jsonify,后来项目换成flask的时候，也如法炮制，将render做成了装饰器。
+测试 两者的测试哲学不同。
+pyramid因为处理函数返回的数据是dict，所以，它的测试是直接对处理函数测试，将req填好数据，然后直接调用处理函数，得到dict，再验证dict正确性。
+flask需要一个请求上下文来测试，也可以说是模拟一个请求客户端，填入真正的url和数据，返回的也是真的数据，而不是中间数据。
+各有利弊，pyramid的这种方式测不到路由是否正确，flask如果用模板render,得到html，验证数据比较麻烦。
+python3支持 按照各自官网的说法，pyramid对python3完全支持。
+flask本身支持，但是它认为好多add-on仍旧是python2,所以还是推荐python2.
+更多 pyramid对web还有更多的框架定义，例如security,支持认证和权限等等。
+flask更内聚一点，额外功能用addon实现。
+总结 两者都是优秀的框架，项目换成flask不是因为flask比pyramid好，只是flask中文资源更多一点，因为初入web,找help更简单一点。 其实，pyramid的config装饰器功能强大，几乎配置均可以写在装饰器里，包括method，query string，render资源，不仅仅是url本身，我喜欢这种方式，似乎其他的web框架都没有这么强大的配置装饰器。 作为初入者，我不太明白为什么flask比pyramid更流行，从最后展现的框架上看，我认为pyramid更好，更符合工程需求，更完善。</description>
     </item>
     
     <item>
@@ -80,7 +140,13 @@
       <pubDate>Mon, 10 Nov 2014 21:20:12 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2014/n-nodejs-version/</guid>
-      <description>nodejs多版本共存</description>
+      <description>想尝试一下ec6的generator和co,为了不影响原有的开发环境 使用n来管理nodejs的版本。
+n的使用还是很简单的：
+n latest n stable  分别安装最新发布版本和稳定版本，前者带有ec6支持，后者用于开发环境。 这2个都是安装的二进制版本，不需要编译。
+单独使用n可以切换版本号，但我的目的是二者共存，n还有个命令：
+n use &amp;lt;version&amp;gt;  只要把这个写个alias到shell里，就能共存啦：
+alias nn=&amp;quot;n use 0.11.14 --harmony&amp;quot;  想尝试generator的，只要nn xxx.js就好啦！很方便。
+p.s. 之前还用了一小会nvm，是从源码编译node的，在Linux上切换发生了点问题，具体 原因也不查了，it makes no sense. 感觉没n好用。</description>
     </item>
     
     <item>
@@ -89,7 +155,13 @@
       <pubDate>Fri, 31 Oct 2014 19:13:42 +0000</pubDate>
       
       <guid>http://ryanking8215.github.io/2014/nodejs-buffer-c-string/</guid>
-      <description>nodejs的buffer和c string如何转换,二进制协议用得到</description>
+      <description>设备上有现成的二进制通信协议，nodejs作为客户端连接上去发送请求得到响应。 其中有协议是传送字符串，用c struct表示就是
+struct Response { uint32_t value; char name[64]; };  因为c string以&amp;rsquo;\0&amp;rsquo;为结束，为了协议到c的对端能开箱即用，name最多存63个字节。
+node客户端收到数据后，用buffer来处理，转换成response对象
+{ value: {number} name: {string} }  buf转string的函数是 buf.toString()，但是得到的数据类似于
+&#39;h&#39;,&#39;e&#39;,&#39;l&#39;,&#39;l&#39;,&#39;o&#39;,&#39;\u0000&#39;,&#39;\u0000&#39;  因为js的string不是以&amp;rsquo;\0&amp;rsquo;结束，它把后面的都处理为字符串的一部分，所以我们要处理一下：
+name = name.substring(0,name.indexOf(&#39;\u0000&#39;))  这样就ok了
+编码问题 默认的hex和utf8,nodejs的buffer api都能处理，但是如果是其他编码呢？比如由于历史原因，设备上 传输的中文编码是gb2312。 很幸运的是，npm里有iconv-lite的package，它能将不同的编码从string-&amp;gt;buffer, buffer-&amp;gt;string的转换。 用它就能开心的撸了！</description>
     </item>
     
     <item>
@@ -136,7 +208,17 @@ sock.on(&#39;data&#39;,function(buf){
       <pubDate>Sun, 05 Oct 2014 17:00:20 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2014/git-remote/</guid>
-      <description>简单操作，简单记录</description>
+      <description>看了git的手册，关于remote的操作。稍微精简了一下，以供记录和记忆。
+ 查看远程仓库 git remote [-v]
+ 添加远程仓库 git remote add [remote-name] [url]
+ 改名远程仓库 git remote rename [old-name] [new-name]
+ 删除远程仓库 git remote rm [remote-name]
+ 抓取远程仓库的数据 git fetch [remote-name]
+ 推送数据到远程分支 git push [remote-name] [branch-name] git push [remote-name] [local-branch-name]:[remote-branch-name]
+ 删除远程仓库分支 git push [remote-name] :[remote-branch-name]
+ 使用本地分支跟踪远程分支 git checkout &amp;ndash;track [remote-name]/[remote-branch-name] git checout -b [local-branch-name] [remote-name]/[remote-branch-name]
+ 如果本地分支为跟踪分支： 在此分支下 git pull（fetch and merge）, git push可以自动识别远程信息，不需要填写remote-name/branch-name了。包括git clone来分支的。
+ 合并本地分支和远程分支 git merge [remote-name]/[remote-branch-name]</description>
     </item>
     
     <item>
@@ -145,7 +227,9 @@ sock.on(&#39;data&#39;,function(buf){
       <pubDate>Sun, 05 Oct 2014 16:50:54 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2014/promise-careful/</guid>
-      <description>使用promise是一些注意的问题，不定时更新&amp;hellip;</description>
+      <description>promise可以级联，但是不要忘记在then()中return一个Promise,否则将会并发执行。
+do_a() .then(function(){ do_b() }) .then(function(){ do_c() })  VS.
+do_a() .then(function(){ return do_b() }) .then(function(){ })  切记！</description>
     </item>
     
     <item>
@@ -154,7 +238,8 @@ sock.on(&#39;data&#39;,function(buf){
       <pubDate>Sun, 05 Oct 2014 16:47:03 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2014/promise-array/</guid>
-      <description>使用promise处理数组的方法和要注意的问题</description>
+      <description>promise 使用bluebird，现在要求按照数组顺序启动异步任务，也即等待一个promise被settled后再执行下一个。 有什么方法吗？难道按照数组写死一个个的then吗？ Promise.map() Promise.map() 是按顺序迭代数组，但是异步任务仍旧是并发执行的。不符合条件。
+递归 var array = [&#39;a1&#39;,&#39;a2&#39;,&#39;a3&#39;,&#39;a4&#39;] return (function handle_array(idx){ idx = idx || 0 if (idx&amp;gt;=array.length) { return } return async_task(id,array[idx]) .then(function(result){ idx++; return handle_array(idx); }) })()  利用promise对象迭代 var promise = Promise.resolve() array.forEach(function(v){ console.log(v) promise = promise.then(function(){ return async_task(v) }) .then(function(v){ console.log(v) }) }) promise.then(function(){ console.log(&#39;done&#39;) })  可能还有其他方法。 个人感觉递归更自然一点。 第二种方法要记住promise可以先返回，但是按照顺序被resolved后再执行下一个的。</description>
     </item>
     
     <item>
@@ -174,7 +259,11 @@ sock.on(&#39;data&#39;,function(buf){
       <pubDate>Sat, 04 Oct 2014 22:13:35 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2014/live555-analyze/</guid>
-      <description>不定时更新&amp;hellip;</description>
+      <description>Source Live555下FramedSource是继承于MediaSource的类，表示提供帧数据源, 主要用“模板模式&amp;rdquo;实现了getNextFrame()接口，其中doGetNextFrame()需要子类去实现。
+Source级联 大部分的Source类都继承自FramedFilter类而不是FramedSource， FramedFilter本身是一个FramedSource类，而且可以有一个FramedSource类对象作为input， 这样FramedFilter就可以级联起来，对用户使用来说， live555不主动定义现有的FramedSource，因为每个用户的数据来源广泛， 用户只要实现了自己的FrameSouce类，然后就可以使用现有的FramedFilter类做处理。
+例如，我只要实现自己的FrameSource类，或从网络自有协议获取数据， 或从设备直接编码得到数据， 然后通过live555的现有H264VideoStreamFramer-&amp;gt;H264FUAxxx-&amp;gt;H264RTPSink,这样利用live555，实现h264的rtp封装。
+补充 如果直接从RTP流获取数据作为Source,live555有现成的RtpSource和N种媒体类型对应的RtpSource子类。
+如果从设备直接编码数据，可以继承DeviceSource类，这是live555预先定义好的抽象类.</description>
     </item>
     
     <item>
@@ -197,7 +286,9 @@ response的content也不一样，那收到协议以后如何解析呢？连内�
       <pubDate>Wed, 04 Jun 2014 22:20:00 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2014/dont-strip-ko/</guid>
-      <description>闹乌龙啦&amp;hellip;</description>
+      <description>今天给嵌入式linux系统做升级包，发现升级包有点大，于是把lib下和bin下的 文件都strip了一下，手痒了，把lib/modules/下的ko也strip了一下。
+还好测试了一下升级包，设备重启后无法加载内核模块，这才发觉，我把ko的symbols都 strip了，内核当然无法加载ko了。
+切记，切记！</description>
     </item>
     
     <item>
@@ -206,7 +297,8 @@ response的content也不一样，那收到协议以后如何解析呢？连内�
       <pubDate>Wed, 05 Jun 2013 17:20:00 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2013/pjsip/</guid>
-      <description>pjsip使用过程中总结的问题，不定时更新&amp;hellip;</description>
+      <description>多线程 多线程调用pjlib的api需要注册进pjlib的线程才能执行。使用pj_thread_register()即可。 但是在某些环境下，仍旧会crash，查看堆栈信息是assert(mutex-&amp;gt;owner()!=pj_thread_this())这里。 查看源码，发现该段代码是包含在PJ_DEBUG的宏内，我们需要PJ_DEBUG的宏注释掉就好了，或者#define PJ_DEBUG 0.
+具体编译方法可以参见pjlib/include/pj/config_site_sample.h里MAX_SPEED的配置。</description>
     </item>
     
     <item>

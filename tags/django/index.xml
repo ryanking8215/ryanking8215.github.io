@@ -17,7 +17,13 @@
       <pubDate>Sun, 25 Oct 2015 10:00:00 +0800</pubDate>
       
       <guid>http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/</guid>
-      <description>由一个一对多关系由form创建model对象想到的。 提供了2种方法。</description>
+      <description>简述 例如Model A和Model S是一对多的关系，即A是one， S是many, 使用ForeignKey来定义
+class A(models.Model): name = models.CharFields(max_length=64) class S(models.Model): name = models.CharFields(max_length=64) a = models.ForeignKey(A)  在某个页面创建S的时候，需要指定是哪个A。 如果为A和S注册了admin，那么在admin-site里创建S的时候，会看到需要选择哪个A的实例，它会把所有的A的记录都列出来
+但这个是针对admin的，不是针对业务的，如果一个用户想为他名下的某个A资源建立一个S的资源，那么把所有A的记录都列出来是不合适的，也不安全；实际上例如POST /A/1/S/create这样的url已经含了A的主键，在创建S的时候只需要为a field赋值即可，而且是自动的，不需要用户选择。
+策略 就是在创建S的时候，不能把a的field暴露出来，并且根据url里的A的主键，将a赋值为A.objects.get(pk=1)即可。
+方法1 直接使用CreateView，model为S，form暴露的fields需要包括a，在获取form初始值时，将a赋值。form在render的时候，需要隐藏a field，需要自定义各form的field，不能使用form.as_p()等。
+class SCreateView(CreateView): model = S fields = {&#39;name&#39;,&#39;a&#39;} success_url = &#39;myurl&#39; template_name = &#39;s_add.html&#39; def get(self, request, *args, **kwargs): # 这里根据url参数获取A的对象 self.a_object = A.objects.get(pk=kwargs[&#39;a_id&#39;]) def get_initial(self): # 这里这样默认的form里a field就有值了。 return {&#39;a&#39;:self.a_object.pk}  方法2 使用SignalObjectMixin和FormView的组合，SignalObjectMixin是为了获取A的对象，FormView用于处理form的get和post。特别是post，我们的Form不需要有a field，在form_valid()里，通过form.save(commit=False)来创建一个S对象，但是该对象还没有持久化，然后为该对象的a field赋值为self.object.pk(通过SignalObjectMixin)即可，然后调用s.save()即可。
+class SForm(form.ModelForm): class Meta: model = S fields = {&#39;name&#39;} class SCreateView(SingleObjectMixin, FormView): model = A form_class = SForm def get(self, request, *args, **kwargs): self.</description>
     </item>
     
   </channel>
