@@ -9,9 +9,9 @@
   <meta name="description" content="RyanKing的技术博客网站，主要关注服务器开发, 网络，golang, 容器, 分布式系统等。">
   <meta name="keywords" content="golang python mysql 数据库 网络 分布式系统">
   <meta name="google-site-verification" content="PZRbrEqaF56nZPzyMmCGFfGOrXBtp30MkquLjCmallQ" />
-  <link rel="prev" href="http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/" />
-  <link rel="next" href="http://ryanking8215.github.io/2018/gin_echo_handler/" />
-  <link rel="canonical" href="http://ryanking8215.github.io/2016/python35-cross-compile/" />
+  <link rel="prev" href="http://ryanking8215.github.io/2016/python35-cross-compile/" />
+  <link rel="next" href="http://ryanking8215.github.io/2019/test_hugo/" />
+  <link rel="canonical" href="http://ryanking8215.github.io/2018/gin_echo_handler/" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -22,10 +22,10 @@
   <title>
        
        
-           python3.5 交叉编译 | RyanKing&#39;s Blog
+           Gin和Echo的handler在处理时的不同 | RyanKing&#39;s Blog
        
   </title>
-  <meta name="title" content="python3.5 交叉编译 | RyanKing&#39;s Blog">
+  <meta name="title" content="Gin和Echo的handler在处理时的不同 | RyanKing&#39;s Blog">
     
   
   <link rel="stylesheet" href="/font/iconfont.css">
@@ -44,21 +44,21 @@
          "@id": "http:\/\/ryanking8215.github.io"
     },
     "articleSection" : "posts",
-    "name" : "python3.5 交叉编译",
-    "headline" : "python3.5 交叉编译",
-    "description" : "交叉编译python3.5.1的方法, 用于嵌入式系统。",
+    "name" : "Gin和Echo的handler在处理时的不同",
+    "headline" : "Gin和Echo的handler在处理时的不同",
+    "description" : "gin和echo框架的handler在处理时的不同",
     "inLanguage" : "en-us",
     "author" : "Ryan.King",
     "creator" : "Ryan.King",
     "publisher": "Ryan.King",
     "accountablePerson" : "Ryan.King",
     "copyrightHolder" : "Ryan.King",
-    "copyrightYear" : "2016",
-    "datePublished": "2016-01-17 14:50:54 \x2b0800 CST",
-    "dateModified" : "2016-01-17 14:50:54 \x2b0800 CST",
-    "url" : "http:\/\/ryanking8215.github.io\/2016\/python35-cross-compile\/",
-    "wordCount" : "38",
-    "keywords" : [ "python","cross-compile", "RyanKing\x27s Blog"]
+    "copyrightYear" : "2018",
+    "datePublished": "2018-12-25 10:20:39 \x2b0800 CST",
+    "dateModified" : "2018-12-25 10:20:39 \x2b0800 CST",
+    "url" : "http:\/\/ryanking8215.github.io\/2018\/gin_echo_handler\/",
+    "wordCount" : "187",
+    "keywords" : [ "golang","web","webframework", "RyanKing\x27s Blog"]
 }
 </script>
 
@@ -118,11 +118,11 @@
       		
 <article class="post-warp" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">python3.5 交叉编译</h1>
+        <h1 class="post-title" itemprop="name headline">Gin和Echo的handler在处理时的不同</h1>
         <div class="post-meta">
                 Written by <a itemprop="name" href="http://ryanking8215.github.io" rel="author">Ryan.King</a> with ♥ 
                 <span class="post-time">
-                on <time datetime=2016-01-17 itemprop="datePublished">January 17, 2016</time>
+                on <time datetime=2018-12-25 itemprop="datePublished">December 25, 2018</time>
                 </span>
                 in
                 <i class="iconfont icon-folder"></i>
@@ -150,43 +150,130 @@
 
           
 
-<p>有一个嵌入式项目，尝试将python3.5.1移植到该平台。还未确定是否用python开发, 先把
-环境整好，到时想用就能用了，也记录一下，可以用这种方法移植到其他平台。</p>
+<h1 id="引子">引子</h1>
 
-<h1 id="问题">问题</h1>
+<p><a href="https://gin-gonic.com/" rel="nofollow noreferrer" target="_blank">Gin</a>和<a href="https://echo.labstack.com/" rel="nofollow noreferrer" target="_blank">Echo</a>都是我很喜欢的web框架。</p>
 
-<p>Python工程本来就有<code>configure</code>工具，理论上讲交叉编译比较简单，只要指定<code>--host</code>为你
-的交叉编译工具链即可。其他基于<code>autoconf/automake</code>的也是类似的。但是Python比较特殊
-的是，在交叉编译过程中，会生成<code>Parse/Pgen</code>和<code>python</code>应用程序，然后会运行该程序,
-那么问题来了，交叉编译出来的程序在开发机上无法执行的，它们是运行在嵌入式系统上的。</p>
-
-<p>查看网络上的解决方法:</p>
+<p>它们2个对于Handler函数的定义略有不同.</p>
 
 <ul>
-<li><p>为Python工程打补丁</p>
+<li><p>Gin</p>
 
-<p>打补丁的方法只支持到3.2，新版本就没有了, 大意是先是用本地的编译器编译出python和pgen，改名，然后再是用
-交叉编译工具编译，当然需要加入特殊的命令行参数来指定刚才编译出来的python和pgen。</p></li>
+<pre><code class="language-golang">type HandlerFunc func(*Context)
+</code></pre></li>
 
-<li><p>压根不处理</p>
+<li><p>Echo</p>
 
-<p>不处理的也有，就直接make就ok了，是python3.4+mips的环境，不明白怎么没碰到这个问题。</p></li>
+<pre><code class="language-golang">type HandlerFunc func(Context) error
+</code></pre></li>
 </ul>
 
-<p>看来要自己解决了。
-尝试忽略执行该程序的过程，修改<code>Makefile</code>, 找到这部分，把它们注释掉，
-继续make，最后ok了。
-可能不是一个好方法，但是一个可行的方法。</p>
+<p>HandlerFunc定义不同, Echo比Gin多返回了error。</p>
 
-<h1 id="参考">参考</h1>
+<p>写Restful业务时，一般正常情况下返回数据，错误情况下需要返回错误号，或者一个错误对象，该对象包含错误号和错误消息或其他信息. 我们看下在Gin框架下如何构建。</p>
 
-<p>网上找了很多资料做参考，这里记录一下。</p>
+<h1 id="gin">Gin</h1>
 
-<ul>
-<li><a href="http://www.tuicool.com/articles/b6f6Nvf" rel="nofollow noreferrer" target="_blank">交叉编译Python至嵌入式arm(支持import sqlite3,datetime等)&mdash;&ndash;Cross Compiling Python for Emb&hellip;</a></li>
-<li><a href="http://www.tuicool.com/articles/YRFFfa" rel="nofollow noreferrer" target="_blank">交叉编译Python 3.3 压成1.5MB</a></li>
-<li><a href="http://www.tuicool.com/articles/qe6V3y" rel="nofollow noreferrer" target="_blank">为 Kindle 交叉编译 Zsh 和 Python 3.3</a></li>
-</ul>
+<p>先定义Error，Resonses数据结构，然后定义response函数.</p>
+
+<pre><code class="language-golang">type Error struct {
+    HttpCode int         `json:&quot;-&quot;`
+    Code     int         `json:&quot;code&quot;` // 这个是业务层的错误号，非Http Status Code
+    Reason   interface{} `json:&quot;reason&quot;`
+}
+
+type Response struct {
+    Error    *Error      
+    Content  interface{}
+}
+
+func response(c *gin.Context, rsp *Response) {
+    if rsp.Error!=nil {
+        c.JSON(rsp.Error.HttpCode, rsp.Error)
+        return
+    }
+    c.JSON(rsp.Content)
+}
+</code></pre>
+
+<p>Handler使用:</p>
+
+<pre><code class="language-golang">func GetXXX(c *gin.Context) {
+    rsp := &amp;Response{}
+
+    defer response(rsp)
+
+    xxx, err := xxxSvc.Get()
+    if err!=nil {
+        rsp.Error = &amp;Error{HttpCode: http.StatusInternalServerError, Code:1000, Reason:err}
+        return
+    }
+    rsp.Content = xxx
+    return
+}
+</code></pre>
+
+<p>这里要注意的是<code>defer</code>, 千万不能写成:</p>
+
+<pre><code class="language-golang">var rsp Response
+defer response(&amp;rsp)
+</code></pre>
+
+<p><code>defer</code>在处理时，会先对函数参数求值，如此一来，rsp里都是0值，无论之后rsp再如何赋值，最终response处理的都是0值。</p>
+
+<p>可以像上述那样使用指针，也可以使用匿名函数来wrap一下:</p>
+
+<pre><code class="language-golang">var rsp Response
+defer func() {
+    response(&amp;rsp)
+}()
+</code></pre>
+
+<h1 id="echo">Echo</h1>
+
+<p>Echo的HandlerFunc返回error，当然我们可以不理会这个error, 那么和Gin的处理方式一样了。</p>
+
+<p>当然也可以利用这个error，如果我们返回error，Echo能够按照我们的协议输出error信息，正常的信息归正常的信息返回，岂不美哉.</p>
+
+<p>先定义错误对象</p>
+
+<pre><code class="language-golang">type Error struct {
+    HttpCode int         `json:&quot;-&quot;`
+    Code     int         `json:&quot;code&quot;` // 这个是业务层的错误号，非Http Status Code
+    Reason   interface{} `json:&quot;reason&quot;`
+}
+</code></pre>
+
+<p>首先要做的，是看下Echo能否支持自定义的错误处理，只有支持了，我们才能截获错误，并按照我们的要求输出。</p>
+
+<pre><code class="language-golang">// 自定义错误处理函数
+func ErrorHandle(err error, c echo.Context) {
+	switch e := err.(type) {
+	case *Error:
+		code := e.HTTPCode
+		c.JSON(code, e)
+	default:
+		c.Echo().DefaultHTTPErrorHandler(err, c)
+	}
+}
+
+// 替换默认的错误处理
+e := echo.New()
+e.HTTPErrorHandler = ErrorHandle
+</code></pre>
+
+<p>有了错误对象和自定义的错误处理，来看下在Handler里如何使用</p>
+
+<pre><code class="language-golang">func GetXXX(c echo.Context) error {
+    xxx, err:= xxxSvc.Get()
+    if err!=nil {
+        return &amp;Error{HttpCode: http.StatusInternalServerError, Code:1000, Reason:err}
+    }
+    return c.JSON(http.StatusOK, xxx)
+}
+</code></pre>
+
+<p>利用了error以后，HandlerFunc的代码会简洁很多，而且符合go-style的错误处理方式.</p>
 
     </div>
 
@@ -201,7 +288,7 @@
              
             <p class="copyright-item">
                     <span>Link:</span>
-                    <a href=http://ryanking8215.github.io/2016/python35-cross-compile/>http://ryanking8215.github.io/2016/python35-cross-compile/</span>
+                    <a href=http://ryanking8215.github.io/2018/gin_echo_handler/>http://ryanking8215.github.io/2018/gin_echo_handler/</span>
             </p>
             
              
@@ -217,11 +304,14 @@
             <section>
             <i class="iconfont icon-tag"></i>Tag(s): 
             
-            <span class="tag"><a href="http://ryanking8215.github.io/tags/python/">
-                    #python</a></span>
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/golang/">
+                    #golang</a></span>
             
-            <span class="tag"><a href="http://ryanking8215.github.io/tags/cross-compile/">
-                    #cross-compile</a></span>
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/web/">
+                    #web</a></span>
+            
+            <span class="tag"><a href="http://ryanking8215.github.io/tags/webframework/">
+                    #webframework</a></span>
             
             </section>
         
@@ -233,10 +323,10 @@
 
     <div class="post-nav">
         
-        <a href="http://ryanking8215.github.io/2015/django-form-create-model-hidden-field/" class="prev" rel="prev" title="Django下通过form创建model对象如何隐藏不必要的field"><i class="iconfont icon-left"></i>&nbsp;Django下通过form创建model对象如何隐藏不必要的field</a>
+        <a href="http://ryanking8215.github.io/2016/python35-cross-compile/" class="prev" rel="prev" title="python3.5 交叉编译"><i class="iconfont icon-left"></i>&nbsp;python3.5 交叉编译</a>
          
         
-        <a href="http://ryanking8215.github.io/2018/gin_echo_handler/" class="next" rel="next" title="Gin和Echo的handler在处理时的不同">Gin和Echo的handler在处理时的不同&nbsp;<i class="iconfont icon-right"></i></a>
+        <a href="http://ryanking8215.github.io/2019/test_hugo/" class="next" rel="next" title="Test Hugo">Test Hugo&nbsp;<i class="iconfont icon-right"></i></a>
         
     </div>
 

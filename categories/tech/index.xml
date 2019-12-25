@@ -44,6 +44,23 @@ curl -X PUT -H &amp;quot;Content-Type: application/json&amp;quot; -d &#39;{&amp;
     </item>
     
     <item>
+      <title>Gin和Echo的handler在处理时的不同</title>
+      <link>http://ryanking8215.github.io/2018/gin_echo_handler/</link>
+      <pubDate>Tue, 25 Dec 2018 10:20:39 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2018/gin_echo_handler/</guid>
+      <description>引子 Gin和Echo都是我很喜欢的web框架。
+它们2个对于Handler函数的定义略有不同.
+ Gin
+type HandlerFunc func(*Context)  Echo
+type HandlerFunc func(Context) error   HandlerFunc定义不同, Echo比Gin多返回了error。
+写Restful业务时，一般正常情况下返回数据，错误情况下需要返回错误号，或者一个错误对象，该对象包含错误号和错误消息或其他信息. 我们看下在Gin框架下如何构建。
+Gin 先定义Error，Resonses数据结构，然后定义response函数.
+type Error struct { HttpCode int `json:&amp;quot;-&amp;quot;` Code int `json:&amp;quot;code&amp;quot;` // 这个是业务层的错误号，非Http Status Code Reason interface{} `json:&amp;quot;reason&amp;quot;` } type Response struct { Error *Error Content interface{} } func response(c *gin.Context, rsp *Response) { if rsp.Error!=nil { c.JSON(rsp.Error.HttpCode, rsp.Error) return } c.JSON(rsp.Content) }  Handler使用:
+func GetXXX(c *gin.Context) { rsp := &amp;amp;Response{} defer response(rsp) xxx, err := xxxSvc.</description>
+    </item>
+    
+    <item>
       <title>python3.5 交叉编译</title>
       <link>http://ryanking8215.github.io/2016/python35-cross-compile/</link>
       <pubDate>Sun, 17 Jan 2016 14:50:54 +0800</pubDate>
