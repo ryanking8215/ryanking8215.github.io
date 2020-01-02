@@ -296,10 +296,9 @@ func Test_SecurityCentral_SecurityOn(t *testing.T) {
 
 &lt;p&gt;原作者从&amp;rdquo;查询&amp;rdquo;和&amp;rdquo;命令&amp;rdquo;的角度去区分两者，&amp;rdquo;查询&amp;rdquo;返回数据，&amp;rdquo;命令&amp;rdquo;不返回数据。&lt;/p&gt;
 
-&lt;h2 id=&#34;example-code&#34;&gt;Example Code&lt;/h2&gt;
+&lt;h2 id=&#34;source-code&#34;&gt;Source Code&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;https://github.com/ryanking8215/test_doubles.git
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/ryanking8215/test_doubles.git&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;https://github.com/ryanking8215/test_doubles.git&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;不要混淆测试替身和库的命名&#34;&gt;不要混淆测试替身和库的命名&lt;/h2&gt;
 
