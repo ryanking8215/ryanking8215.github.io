@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>测试 on RyanKing&#39;s Blog</title>
+    <link>http://ryanking8215.github.io/tags/%E6%B5%8B%E8%AF%95/</link>
+    <description>Recent content in 测试 on RyanKing&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 31 Dec 2019 11:42:52 +0800</lastBuildDate>
+    
+	<atom:link href="http://ryanking8215.github.io/tags/%E6%B5%8B%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>测试替身-Fake,Stub,Mock</title>
+      <link>http://ryanking8215.github.io/2019/test_doubles/</link>
+      <pubDate>Tue, 31 Dec 2019 11:42:52 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/2019/test_doubles/</guid>
+      <description>最近在网上看到这篇博文, 博文介绍了几种&amp;rdquo;测试替身(test doubles)&amp;ldquo;的方式和Java例子。
+这里进行简单的翻译，并给出golang的example.
+ In automated testing it is common to use objects that look and behave like their production equivalents, but are actually simplified. This reduces complexity, allows to verify code independently from the rest of the system and sometimes it is even necessary to execute self validating tests at all. A Test Double is a generic term used for these objects.
+ 在自动化测试领域，普遍使用和生产代码类似，但更简化的对象来测试。这减小了复杂度，并且能和系统其它部分做很好的隔离，可以单独验证。这种对象有个术语，叫&amp;rdquo;测试替身&amp;rdquo;。
+ Although test doubles come in many flavors (Gerard Meszaros introduced five types in this article), people tend to use term Mock to refer to different kinds of test doubles.</description>
+    </item>
+    
+  </channel>
+</rss>

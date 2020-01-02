@@ -6,10 +6,28 @@
     <description>Recent content in Tags on RyanKing&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 22 Dec 2019 16:54:09 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 31 Dec 2019 11:42:52 +0800</lastBuildDate>
     
 	<atom:link href="http://ryanking8215.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>testing</title>
+      <link>http://ryanking8215.github.io/tags/testing/</link>
+      <pubDate>Tue, 31 Dec 2019 11:42:52 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/testing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>测试</title>
+      <link>http://ryanking8215.github.io/tags/%E6%B5%8B%E8%AF%95/</link>
+      <pubDate>Tue, 31 Dec 2019 11:42:52 +0800</pubDate>
+      
+      <guid>http://ryanking8215.github.io/tags/%E6%B5%8B%E8%AF%95/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>golang</title>
